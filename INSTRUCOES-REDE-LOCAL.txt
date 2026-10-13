@@ -1,0 +1,48 @@
+MARKYS — CONFIGURAÇÃO E ACESSO À REDE LOCAL
+Chamador de pacientes · Porta TCP fixa 2222
+Desenvolvido por Daniel Marques via IA
+
+IMPORTANTE
+Esta versão compartilha a fila por HTTP dentro da rede local. Não possui login nem criptografia. Use somente uma rede interna confiável; não use Wi-Fi de visitantes e não encaminhe a porta 2222 para a internet. Na tela pública aparecem nomes e consultórios: mantenha a tela voltada para a sala de espera e mostre apenas o mínimo necessário.
+
+1. BAIXAR E PREPARAR
+1. Abra o repositório GitHub MARKYS e clique em Code > Download ZIP.
+2. Extraia todos os arquivos para uma pasta permanente no computador da recepção, por exemplo Documentos\MARKYS. Não execute diretamente dentro do ZIP.
+3. Confirme que index.html, servidor-markys.ps1, INICIAR-SERVIDOR-MARKYS.bat e fila.json estão na mesma pasta.
+
+2. CONECTAR OS DISPOSITIVOS
+1. Conecte a recepção e a tela da sala de espera à mesma rede local confiável (Wi-Fi interno ou rede cabeada).
+2. Não use rede de convidados, pois ela pode bloquear a comunicação entre dispositivos.
+3. O computador da recepção deve permanecer ligado e sem suspensão durante o uso.
+
+3. INICIAR O SERVIDOR
+1. Dê dois cliques em INICIAR-SERVIDOR-MARKYS.bat.
+2. O servidor usa a porta TCP 2222. Se a porta já estiver ocupada, ele exibirá um erro em vez de escolher outra porta.
+3. A janela mostrará os endereços da recepção e da sala de espera. Use os endereços reais exibidos, não exemplos.
+4. Mantenha a janela do PowerShell aberta; fechá-la interrompe a comunicação.
+
+4. FIREWALL DO WINDOWS
+Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra de entrada TCP para a porta local 2222, permitindo a conexão somente no perfil Privado. Não desative o firewall e não habilite a regra em redes públicas. O Windows pode exigir permissão de administrador.
+
+5. ABRIR A RECEPÇÃO E A TELA DE CHAMADAS
+1. No computador da recepção, abra o endereço-base mostrado na janela do servidor.
+2. No dispositivo da sala de espera, abra o endereço de sala mostrado, que termina em /?painel=1.
+3. Para voz na tela adicional, clique em “Ativar voz nesta tela” uma vez nesse dispositivo e confira o volume.
+4. Faça um teste com um paciente fictício antes de começar. Depois, remova o registro de teste.
+
+6. SOLUÇÃO DE PROBLEMAS
+- Endereço não abre: confira se os dispositivos estão na mesma rede, se o servidor segue aberto e se o IP foi digitado corretamente.
+- Tela remota não atualiza: recarregue a página e verifique a janela do servidor.
+- Erro de porta ocupada: outra aplicação está usando TCP 2222. Feche a instância duplicada do MARKYS ou peça ao TI para verificar a porta.
+- Firewall bloqueando: libere TCP 2222 somente no perfil Privado, conforme a política de TI.
+- Voz não toca: clique em “Ativar voz nesta tela”, verifique o volume e permita áudio no navegador.
+
+7. PRIVACIDADE E ENCERRAMENTO
+- Não insira diagnóstico, CPF nem detalhes clínicos.
+- Qualquer dispositivo com acesso ao endereço na rede pode consultar a fila. Use somente rede confiável.
+- Não publique fila.json com dados reais no GitHub.
+- A fila fica em fila.json, na pasta do servidor. Restrinja o acesso à pasta e faça cópias de segurança conforme a política da organização.
+- Não encaminhe a porta 2222 no roteador para a internet.
+- Para encerrar, volte à janela do PowerShell e pressione Ctrl+C.
+
+FIM
