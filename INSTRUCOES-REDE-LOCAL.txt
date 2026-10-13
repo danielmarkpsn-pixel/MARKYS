@@ -38,7 +38,7 @@ Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra d
 - Tela remota não atualiza: confira se todos acessam o mesmo endereço IP do computador servidor e se a janela do servidor segue aberta.
 - Erro de porta ocupada: outra aplicação está usando TCP 2222. Feche a instância duplicada do MARKYS ou peça ao TI para verificar a porta.
 - Firewall bloqueando: libere TCP 2222 somente no perfil Privado, conforme a política de TI.
-- Voz não toca: clique em “Ativar voz nesta tela”, verifique o volume e permita áudio no navegador.
+- Voz não toca: clique em “Ativar voz nesta tela”, confira o volume, teste a voz no painel de recepção e verifique as vozes disponíveis no Chrome/Windows.
 
 7. PRIVACIDADE E ENCERRAMENTO
 - Não insira diagnóstico, CPF nem detalhes clínicos.
@@ -49,16 +49,15 @@ Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra d
 - Para encerrar, volte à janela do PowerShell e pressione Ctrl+C.
 
 
-8. CONFIGURAR VOZ NEURAL FEMININA POR IA (OPCIONAL)
-A chamada usa a voz neural pt-BR-FranciscaNeural do Microsoft Azure Speech. A integração só gera áudio quando um profissional clica em “Chamar na sala”. Se não houver configuração, o painel tenta usar a voz local do navegador.
+8. VOZ FEMININA NO GOOGLE CHROME (SEM API)
+O MARKYS usa a síntese de voz disponível no Google Chrome/Windows. Não precisa de chave, conta Azure nem pagamento por geração de áudio. A voz e a qualidade dependem das vozes instaladas/disponíveis no computador da tela de espera.
 
-1. Crie um recurso Speech no portal Microsoft Azure e copie a chave e a região do recurso. O serviço pode gerar custos conforme o plano e o uso; confira os preços e limites da sua conta antes de ativar.
-2. No computador que executa o servidor, abra o Prompt de Comando do Windows (CMD) com a mesma conta que inicia o MARKYS e execute, substituindo os valores pelos dados do seu recurso:
-   setx AZURE_SPEECH_KEY "COLE_SUA_CHAVE_AQUI"
-   setx AZURE_SPEECH_REGION "REGIAO_DO_RECURSO"
-3. Feche e abra novamente a janela do servidor MARKYS para que as variáveis sejam carregadas. Não coloque a chave em index.html, em arquivos publicados no GitHub, nem a envie por mensagem.
-4. Na tela da sala de espera, clique em “Ativar voz nesta tela” uma vez e teste uma chamada. O estado da tela indicará se a voz neural está sendo reproduzida; se a configuração falhar, será tentada a voz do navegador.
-5. A voz neural exige internet no computador do servidor. O nome do paciente e o texto da chamada são enviados ao Microsoft Azure para gerar o áudio. Confirme a autorização da clínica e as regras de privacidade aplicáveis antes de usar dados reais.
+1. Baixe do GitHub os arquivos atualizados e reinicie o servidor MARKYS.
+2. Abra a tela da sala de espera no Google Chrome e clique uma vez em “Ativar voz nesta tela” para permitir a reprodução de áudio.
+3. No painel de recepção, a caixa “Chamador de voz” mostra as vozes que o navegador disponibiliza. A opção automática tenta escolher uma voz feminina em português; se necessário, selecione manualmente outra voz no menu e clique em “Testar voz”.
+4. Se não houver voz feminina em português, abra as Configurações do Windows e procure as opções de Acessibilidade/Fala ou Hora e idioma/Voz para instalar um pacote de voz em português (Brasil), se disponível. Feche e abra o Chrome novamente para atualizar a lista.
+5. O anúncio é iniciado quando o profissional clica em “Chamar na sala”. O navegador pode bloquear áudio até que alguém interaja com a tela de espera.
+Observação: esta alternativa não chama um serviço externo de IA. Ela usa as vozes fornecidas pelo Chrome/Windows; por isso, não é possível garantir que toda máquina tenha uma voz neural feminina instalada.
 
 FIM
 
