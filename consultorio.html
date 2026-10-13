@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2458a6">
+<title>MARKYS — Painel do profissional</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6f8;--panel:#fff;--line:#dce5e9;--text:#20313a;--muted:#637984;--blue:#2458a6;--red:#b42332;--green:#137547}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 "Segoe UI",Arial,sans-serif}header{padding:20px clamp(16px,4vw,36px);background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px}.brand img{width:48px;height:48px;object-fit:contain}.brand h1{font-size:20px;margin:0}.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}main{max-width:1200px;margin:auto;padding:24px 16px}.top{display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap;margin-bottom:18px}.top h2{font-size:30px;margin:0 0 4px}.top p{margin:0;color:var(--muted)}select,button{font:inherit;border-radius:10px;padding:11px 13px}select{border:1px solid #cbd9df;background:#fff;min-width:230px}.summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.pill{padding:8px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:12px;font-weight:750}.list{display:grid;gap:12px}.patient{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}.name{font-size:20px;font-weight:850;overflow-wrap:anywhere}.meta{color:var(--muted);font-size:13px;margin-top:5px}.status{display:inline-block;margin-top:8px;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;text-transform:uppercase;background:#edf2f5;color:#526872}.status.attending{background:#fee4e2;color:#9d1c27}.status.released{background:#d9fbe7;color:#12663c}.actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.btn{border:0;cursor:pointer;font-weight:800;font-size:13px}.blue{background:#2458a6;color:#fff}.red{background:#b42332;color:#fff}.green{background:#137547;color:#fff}.gray{background:#e7eef1;color:#253a43}.empty{padding:35px;text-align:center;background:#fff;border:1px dashed #cbd9df;border-radius:14px;color:var(--muted)}.note{font-size:12px;color:var(--muted);margin-top:18px}@media(max-width:650px){.patient{grid-template-columns:1fr}.actions{justify-content:stretch}.actions button{flex:1}.top h2{font-size:25px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><img src="logo-Markys.png" alt="MARKYS"><div><h1>MARKYS</h1><p>Painel do profissional · atendimento por serviço</p></div></div><a href="/" style="color:#2458a6;font-weight:700">Recepção</a></header>
+<main>
+<section class="top"><div><h2 id="heading">Painel do profissional</h2><p>Chame o paciente, marque quando começar e libere ao concluir este serviço.</p></div><div><label for="service" style="display:block;font-size:12px;font-weight:800;margin-bottom:6px">TIPO DE ATENDIMENTO</label><select id="service"><option>Cirurgia</option><option>Consulta</option><option>Laboratório</option><option>Raio-X</option><option>Audiometria</option><option>ASO</option><option>Exames complementares</option><option>Medicina ocupacional</option><option>Retorno</option><option>Teste ergométrico</option><option>Ultrassom</option><option>Outros</option></select></div></section>
+<div class="summary"><span class="pill" id="waiting">Aguardando: 0</span><span class="pill" id="active">Em atendimento: 0</span><span class="pill" id="released">Liberados: 0</span></div>
+<div class="list" id="list"><div class="empty">Carregando fila compartilhada…</div></div>
+<p class="note">As mudanças são compartilhadas automaticamente com a recepção e a tela da sala de espera. Mantenha esta página aberta e use o endereço do servidor local da clínica.</p>
+</main>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const services=["Cirurgia","Consulta","Laboratório","Raio-X","Audiometria","ASO","Exames complementares","Medicina ocupacional","Retorno","Teste ergométrico","Ultrassom","Outros"];
+const params=new URLSearchParams(location.search);const requested=params.get("servico");if(requested&&services.includes(requested))$("service").value=requested;
+let patients=[];let busy=false;
+function servicesOf(p){if(Array.isArray(p.services)&&p.services.length)return p.services;return String(p.service||"Consulta").split(",").map(s=>s.trim()).filter(Boolean);}
+function stateFor(p,service){if(!p.serviceStates||typeof p.serviceStates!=="object")p.serviceStates={};if(!p.serviceStates[service])p.serviceStates[service]={status:"Aguardando",updatedAt:p.created||Date.now()};return p.serviceStates[service];}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+async function load(){try{const r=await fetch("/api/state",{cache:"no-store"});if(!r.ok)throw Error();const data=await r.json();patients=Array.isArray(data)?data:[];render();}catch(e){$("list").innerHTML='<div class="empty">Sem conexão com o servidor MARKYS. Confira o endereço e se o servidor está aberto.</div>';}}
+async function mutate(id,action){if(busy)return;busy=true;try{const r=await fetch("/api/state",{cache:"no-store"});if(!r.ok)throw Error("Não foi possível ler a fila.");const data=await r.json();const list=Array.isArray(data)?data:[];const p=list.find(x=>String(x.id)===String(id));if(!p)throw Error("Paciente não encontrado. Atualize a tela.");const service=$("service").value;if(!servicesOf(p).includes(service))throw Error("Este paciente não tem este serviço cadastrado.");if(!p.serviceStates||typeof p.serviceStates!=="object")p.serviceStates={};const current=p.serviceStates[service]||{status:"Aguardando",updatedAt:p.created||Date.now()};const now=Date.now();
+if(action==="call"){p.serviceStates[service]={status:"Chamado",updatedAt:now};p.activeService=service;p.status="Chamado";p.calledAt=now;p.calledService=service;}
+if(action==="attend"){p.serviceStates[service]={...current,status:"Atendendo",updatedAt:now};p.activeService=service;p.status="Chamado";p.calledService=service;p.attendingAt=now;}
+if(action==="release"){p.serviceStates[service]={...current,status:"Liberado",updatedAt:now};const allDone=servicesOf(p).every(s=>(p.serviceStates[s]||{}).status==="Liberado");if(allDone){p.status="Atendido";p.attendedAt=now;}else{p.status="Chamado";}p.activeService=service;p.calledService=service;p.releasedAt=now;}
+const save=await fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(list)});if(!save.ok)throw Error("Não foi possível salvar a alteração.");patients=list;render();}catch(e){alert(e.message||"Falha de comunicação com o servidor.");}finally{busy=false;}}
+function render(){const service=$("service").value;$("heading").textContent=service+" — painel do profissional";const list=patients.filter(p=>(p.day===new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2,"0")+"-"+String(new Date().getDate()).padStart(2,"0"))&&servicesOf(p).includes(service));list.sort((a,b)=>(Number(!!b.priority)-Number(!!a.priority))||(a.created||0)-(b.created||0));let waiting=0,active=0,released=0;
+const cards=list.map(p=>{const st=stateFor(p,service);if(st.status==="Liberado")released++;else if(st.status==="Atendendo")active++;else waiting++;const statusClass=st.status==="Atendendo"?"attending":st.status==="Liberado"?"released":"";let buttons="";if(st.status==="Aguardando")buttons='<button class="btn blue" data-action="call" data-id="'+esc(p.id)+'">🔊 Chamar na sala</button>';else if(st.status==="Chamado")buttons='<button class="btn red" data-action="attend" data-id="'+esc(p.id)+'">▶ Atender</button>';else if(st.status==="Atendendo")buttons='<button class="btn green" data-action="release" data-id="'+esc(p.id)+'">✓ Liberar</button>';else buttons='<span class="status released">Serviço concluído</span>';return '<article class="patient"><div><div class="name">'+esc(p.name)+'</div><div class="meta">Serviço: '+esc(service)+' · Entrada: '+esc(p.time||"—")+(p.priority?" · PRIORIDADE":"")+'</div><span class="status '+statusClass+'">'+esc(st.status)+'</span></div><div class="actions">'+buttons+'</div></article>';});
+$("list").innerHTML=cards.length?cards.join(""):'<div class="empty">Não há pacientes cadastrados para este serviço hoje.</div>';$("waiting").textContent="Aguardando: "+waiting;$("active").textContent="Em atendimento: "+active;$("released").textContent="Liberados: "+released;}
+$("service").addEventListener("change",render);$("list").addEventListener("click",e=>{const b=e.target.closest("button[data-action]");if(b)mutate(b.dataset.id,b.dataset.action);});load();setInterval(load,1500);
+})();
+</script>
+</body>
+</html>
