@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2458a6">
+<title>MARKYS - Medicina Ocupacional</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6f8;--panel:#fff;--panel2:#f7fafb;--line:#dce5e9;--text:#20313a;--muted:#637984;--teal:#2458a6;--teal2:#173e79;--amber:#8b5d05;--red:#b42332}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#d9f0ef 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.45 "Segoe UI",Arial,sans-serif}
+header{padding:24px clamp(16px,4vw,42px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#ffffffd9}
+.brand{display:flex;align-items:center;gap:13px}.logo-mark{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,#153e75,#2477b8);display:grid;place-items:center;color:#fff;font-weight:900;font-size:27px;letter-spacing:-1px;box-shadow:0 8px 22px #153e7526}.brand h1{font-size:22px;margin:0;letter-spacing:.3px}.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}.datebox{color:var(--muted);font-size:13px;text-align:right}
+main{max-width:1400px;margin:auto;padding:26px clamp(14px,3vw,32px) 40px}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}.eyebrow{color:var(--teal);text-transform:uppercase;letter-spacing:1.8px;font-size:11px;font-weight:800}.hero h2{font-size:clamp(25px,4vw,34px);line-height:1.15;margin:7px 0}.hero p{color:var(--muted);margin:0}.localtag{border:1px solid #a6d9d8;background:#e6f6f5;color:#075b62;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:20px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 5px 18px #1b3a4408}.stat{padding:17px 19px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:29px;margin-top:5px}.stat .teal{color:var(--teal)}
+.layout{display:grid;grid-template-columns:minmax(290px,360px) minmax(0,1fr);gap:18px;align-items:start}.panel{padding:20px}.panel h3{margin:0 0 5px;font-size:18px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px}.field{margin:13px 0}.field label{display:block;font-size:12px;color:#536a74;margin-bottom:7px;font-weight:700}.field input,.field select{width:100%;background:#fff;border:1px solid #cbd9df;border-radius:10px;padding:12px;color:var(--text);font:inherit;outline:none}.field input:focus,.field select:focus{border-color:var(--teal);box-shadow:0 0 0 3px #087f8c1c}.btn{border:0;border-radius:10px;padding:11px 14px;font:700 13px "Segoe UI",Arial;cursor:pointer;transition:transform .12s,filter .12s}.btn:hover{filter:brightness(1.04)}.btn:active{transform:scale(.98)}.primary{background:var(--teal);color:#fff}.secondary{background:#e7eef1;color:#253a43;border:1px solid #d2dfe4}.ghost{background:transparent;color:#415963;border:1px solid #d0dce1}.warning{background:#fff5dd;color:#77500b;border:1px solid #ead5a4}.danger{color:#a01e2b;background:#fff0f0;border:1px solid #efc8cc}.full{width:100%}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions .btn{flex:1}.voicebox{margin-top:16px;padding:14px;border:1px solid #c6e2e0;border-radius:12px;background:#f0f9f8}.voicebox strong{font-size:13px}.voicebox p{margin:5px 0 12px;color:var(--muted);font-size:12px}.voicebox select{width:100%;background:#fff;color:var(--text);border:1px solid #c2d9d7;padding:9px;border-radius:8px;margin-bottom:9px}.voice-note{font-size:11px;color:var(--muted);margin-top:8px}
+.queuehead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}.queuehead h3{margin:0}.queuehead .sub{margin:4px 0 0}.search{max-width:230px;width:100%;padding:10px 12px;border-radius:9px;border:1px solid #cbd9df;background:#fff;color:var(--text)}
+.patient-list{display:grid;gap:10px}.patient{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;background:#fbfdfe;border:1px solid #e0e8ec;border-radius:13px;padding:13px}.patient.called{border-color:#72c7c3;background:linear-gradient(100deg,#e7f7f5,#fff)}.patient.attended{opacity:.68}.number{width:40px;height:40px;display:grid;place-items:center;border-radius:11px;background:#e7eef1;color:#39545f;font-weight:800}.patient.called .number{background:#ccece9;color:#075b62}.pname{font-weight:800;font-size:15px;overflow-wrap:anywhere}.meta{color:var(--muted);font-size:12px;margin-top:3px}.status{display:inline-block;margin-top:6px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#526872}.status.waiting{color:#8b5d05}.status.called{color:#087f8c}.status.attended{color:#687b83}.pactions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.pactions .btn{padding:8px 10px;font-size:12px}.empty{padding:38px 15px;text-align:center;border:1px dashed #cbd9df;border-radius:12px;color:var(--muted)}.empty b{display:block;color:var(--text);font-size:15px;margin-bottom:5px}.footnote{margin-top:18px;color:#71858e;font-size:11px;line-height:1.55}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#dffcf7;color:#07302a;padding:11px 16px;border-radius:10px;font-weight:700;box-shadow:0 10px 40px #0002;z-index:5;max-width:90%;display:none}.toast.show{display:block}
+.public-mode header .datebox{display:block}.public-mode main{max-width:1500px;padding-top:5vh}.public-mode main>.stats,.public-mode main>.layout{display:none}.public-mode .hero{align-items:center;margin-bottom:34px}.public-mode .hero h2{font-size:clamp(32px,5vw,58px)}.public-mode .hero p{font-size:18px}.public-mode .localtag{display:none}.public-mode .hero-actions{display:none}.public-screen{display:none}.public-mode .public-screen{display:block}.screen-audio{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:0 auto 22px;max-width:900px}.screen-audio span{font-size:13px;color:var(--muted);text-align:center}.public-mode .screen-audio .btn{font-size:15px;padding:13px 20px}.public-screen .screen-label{color:var(--teal);font-weight:800;letter-spacing:3px;text-align:center;font-size:clamp(13px,2vw,18px);margin:10px 0 25px}.called-display{display:grid;gap:18px;max-width:1100px;margin:auto}.called-card{border:1px solid #b5dfdd;background:linear-gradient(120deg,#e6f7f5,#fff);border-radius:22px;padding:clamp(22px,4vw,48px);text-align:center;box-shadow:0 15px 35px #1b3a440e;animation:appear .35s ease}.called-card .call-label{color:#58747c;letter-spacing:2px;font-weight:800;font-size:clamp(12px,1.5vw,16px)}.called-card .call-name{font-size:clamp(32px,6vw,76px);line-height:1.08;font-weight:850;overflow-wrap:anywhere;margin:14px 0}.called-card .call-room{font-size:clamp(22px,3.5vw,42px);color:#087f8c;font-weight:750}.no-calls{text-align:center;border:1px dashed #c5d5db;border-radius:22px;padding:clamp(45px,10vh,100px) 20px;color:var(--muted);font-size:clamp(18px,2.4vw,27px);background:#ffffffb8}.no-calls strong{display:block;color:var(--text);font-size:clamp(28px,4vw,46px);margin-bottom:12px}.screen-footer{text-align:center;color:#71858e;font-size:13px;margin-top:30px}@keyframes appear{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:24px}.datebox{text-align:left}}@media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}.patient{grid-template-columns:36px minmax(0,1fr)}.number{width:36px;height:36px}.pactions{grid-column:1/-1;justify-content:stretch}.pactions .btn{flex:1}.datebox{display:none}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo-mark" aria-label="MARKYS">M</div><div><h1>MARKYS</h1><p>Medicina Ocupacional · Chamador de pacientes</p></div></div>
+ <div class="datebox" id="today"></div>
+</header>
+<main>
+ <section class="hero"><div><div class="eyebrow">Painel de atendimento</div><h2>Fila de espera</h2><p>Organize as chamadas e anuncie o paciente por voz.</p></div><div class="hero-actions"><button class="btn primary" id="openDisplay" type="button">▣ Abrir tela da sala de espera</button></div></section>
+ <section class="public-screen" id="publicScreen"><div class="screen-label">CLÍNICA MARKYS · CHAMADAS</div><div class="screen-audio"><button class="btn primary" id="enablePublicVoice" type="button">🔊 Ativar voz nesta tela</button><span id="publicVoiceStatus" role="status">Clique para liberar os anúncios por voz neste dispositivo.</span></div><div class="called-display" id="calledDisplay"></div><div class="screen-footer">Aguarde o anúncio por voz e dirija-se ao consultório indicado.</div></section>
+ <section class="stats">
+  <div class="stat"><span>Aguardando</span><strong id="waitingCount">0</strong></div>
+  <div class="stat"><span>Chamado</span><strong class="teal" id="calledCount">0</strong></div>
+  <div class="stat"><span>Atendido hoje</span><strong id="attendedCount">0</strong></div>
+ </section>
+ <div class="layout">
+  <aside class="panel">
+   <h3>Adicionar paciente</h3><p class="sub">Cadastre manualmente quem chegou à recepção.</p>
+   <form id="patientForm">
+    <div class="field"><label for="patientName">NOME DO PACIENTE *</label><input id="patientName" maxlength="100" autocomplete="off" placeholder="Nome para chamada" required></div>
+    <div class="field"><label for="room">CONSULTÓRIO *</label><input id="room" maxlength="50" value="Consultório 1" required></div>
+    <div class="field"><label for="service">TIPO DE ATENDIMENTO (OPCIONAL)</label><select id="service"><option>Consulta</option><option>Exame</option><option>Retorno</option><option>Medicina ocupacional</option><option>Outro</option></select></div>
+    <button class="btn primary full" type="submit">＋ Adicionar à fila</button>
+   </form>
+   <div class="voicebox"><strong>🔊 Chamador de voz</strong><p>Pronúncia em português do Brasil. O navegador usará a voz feminina disponível mais adequada.</p>
+    <label for="voiceSelect" style="font-size:11px;color:#b8c6ce;display:block;margin-bottom:6px">VOZ DISPONÍVEL</label><select id="voiceSelect"><option value="auto">Escolher voz feminina em português</option></select>
+    <div class="actions"><button class="btn secondary" id="testVoice" type="button">Testar voz</button><button class="btn ghost" id="repeatLast" type="button">Repetir última</button></div>
+    <div class="voice-note" id="voiceStatus">A voz depende das vozes instaladas/disponíveis no navegador do Windows.</div>
+   </div>
+   <p class="footnote">Desenvolvido por Daniel Marques via IA</p>
+  </aside>
+  <section class="panel">
+   <div class="queuehead"><div><h3>Pacientes na fila</h3><p class="sub">Chame, repita a chamada ou finalize o atendimento.</p></div><input class="search" id="search" placeholder="Buscar paciente…" aria-label="Buscar paciente"></div>
+   <div class="patient-list" id="patientList"></div>
+   <div class="actions" style="margin-top:14px"><button class="btn secondary" id="callNext" type="button">▶ Chamar próximo</button><button class="btn ghost" id="clearAttended" type="button">Limpar atendidos</button><button class="btn danger" id="exportCsv" type="button">Exportar CSV</button></div>
+   <p class="footnote">A chamada anuncia o nome do paciente e o consultório informado. Confira se o ambiente permite ouvir a chamada antes de iniciar o atendimento.</p>
+  </section>
+ </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(function(){
+"use strict";
+const KEY="markys_local_queue_v1";
+const publicMode=new URLSearchParams(location.search).get("painel")==="1";
+const serverMode=location.protocol==="http:"||location.protocol==="https:";
+let patients=[];
+let lastAnnouncement="";
+let voices=[];
+let publicVoiceEnabled=false;
+let lastPublicAnnouncementKey="";
+const $=id=>document.getElementById(id);
+const todayKey=new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2,"0")+"-"+String(new Date().getDate()).padStart(2,"0");
+if(publicMode){document.body.classList.add("public-mode");document.title="MARKYS - Medicina Ocupacional | Sala de espera";}
+$("today").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});
+async function load(){if(serverMode){try{const r=await fetch("/api/state",{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const data=await r.json();patients=Array.isArray(data)?data:[];}catch(e){notify("Sem conexão com o servidor local. Confira se o computador da recepção está ligado.");}return;}try{const raw=localStorage.getItem(KEY);patients=raw?JSON.parse(raw):[];if(!Array.isArray(patients))patients=[];}catch(e){patients=[];notify("Não foi possível ler os dados salvos neste navegador.");}}
+async function save(){if(serverMode){try{const r=await fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(patients)});if(!r.ok)throw new Error("HTTP "+r.status);}catch(e){notify("Falha ao salvar no servidor. Confira a conexão e tente novamente.");}return;}try{localStorage.setItem(KEY,JSON.stringify(patients));}catch(e){notify("Armazenamento indisponível. Exporte a fila para não perder os dados.");}}
+function notify(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(notify.timer);notify.timer=setTimeout(()=>el.classList.remove("show"),2800);}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function counts(){const active=patients.filter(p=>p.day===todayKey);$("waitingCount").textContent=active.filter(p=>p.status==="Aguardando").length;$("calledCount").textContent=active.filter(p=>p.status==="Chamado").length;$("attendedCount").textContent=active.filter(p=>p.status==="Atendido").length;}
+function render(){
+ const term=$("search").value.trim().toLocaleLowerCase("pt-BR");
+ const visible=patients.filter(p=>p.day===todayKey&&(!term||(p.name+" "+p.room+" "+p.service).toLocaleLowerCase("pt-BR").includes(term)));
+ visible.sort((a,b)=>({Chamado:0,Aguardando:1,Atendido:2}[a.status]-({Chamado:0,Aguardando:1,Atendido:2}[b.status])||a.created-b.created));
+ $("patientList").innerHTML=visible.length?visible.map((p,i)=>'<article class="patient '+(p.status==="Chamado"?"called":p.status==="Atendido"?"attended":"")+'"><div class="number">'+(i+1)+'</div><div><div class="pname">'+esc(p.name)+'</div><div class="meta">'+esc(p.service||"Atendimento")+' · '+esc(p.room)+' · chegada '+esc(p.time)+'</div><div class="status '+(p.status==="Chamado"?"called":p.status==="Atendido"?"attended":"waiting")+'">'+esc(p.status)+'</div></div><div class="pactions">'+(p.status!=="Atendido"?'<button class="btn primary" data-action="call" data-id="'+p.id+'">🔊 Chamar</button><button class="btn secondary" data-action="attend" data-id="'+p.id+'">✓ Atendido</button>':'<button class="btn ghost" data-action="restore" data-id="'+p.id+'">Reabrir</button>')+'<button class="btn ghost" data-action="remove" data-id="'+p.id+'" aria-label="Remover paciente">✕</button></div></article>').join(""):'<div class="empty"><b>Nenhum paciente na fila</b>Adicione um paciente no formulário ao lado para começar.</div>';
+ counts();
+}
+function renderPublic(){
+ let called=patients.filter(p=>p.day===todayKey&&p.status==="Chamado").sort((a,b)=>(b.calledAt||b.created)-(a.calledAt||a.created));
+ const box=$("calledDisplay");if(!box)return;
+ box.innerHTML=called.length?called.map(p=>'<article class="called-card"><div class="call-label">PACIENTE CHAMADO</div><div class="call-name">'+esc(p.name)+'</div><div class="call-room">➜ '+esc(p.room)+'</div></article>').join(""):'<div class="no-calls"><strong>Aguardando próxima chamada</strong>Por favor, aguarde. Seu nome será anunciado aqui.</div>';
+ if(publicVoiceEnabled&&called.length){const p=called[0],key=String(p.id)+"-"+String(p.calledAt||p.created);if(key!==lastPublicAnnouncementKey){lastPublicAnnouncementKey=key;announce(p);}}
+}
+function announce(p){const text="Paciente "+p.name+". Por favor, compareça ao "+p.room+".";
+ lastAnnouncement=text;
+ if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){notify("Este navegador não oferece leitura de voz. Use Edge ou Chrome atualizado.");return;}
+ window.speechSynthesis.cancel();
+ const utter=new SpeechSynthesisUtterance(text);utter.lang="pt-BR";utter.rate=.88;utter.pitch=1.05;utter.volume=1;
+ const selected=$("voiceSelect").value;
+ let voice=voices.find(v=>v.name===selected);
+ if(!voice){const pt=voices.filter(v=>/^pt(-|_)?br/i.test(v.lang)||/^pt/i.test(v.lang));voice=pt.find(v=>/female|feminina|maria|francisca|luciana|camila|female|helena|brasil/i.test(v.name))||pt[0]||voices.find(v=>/female|feminina|maria|luciana|camila|helena/i.test(v.name));}
+ if(voice){utter.voice=voice;utter.lang=voice.lang||"pt-BR";}
+ utter.onstart=()=>{$("voiceStatus").textContent="Reproduzindo chamada…";const s=$("publicVoiceStatus");if(s&&publicMode)s.textContent="Reproduzindo chamada por voz…";};
+ utter.onend=()=>{$("voiceStatus").textContent=voice?"Voz selecionada: "+voice.name:"Voz padrão do navegador. Se não soar feminina, escolha outra voz disponível.";const s=$("publicVoiceStatus");if(s&&publicMode)s.textContent="Voz ativada. Anúncios automáticos habilitados nesta tela.";};
+ utter.onerror=()=>{$("voiceStatus").textContent="Não foi possível reproduzir a voz. Verifique o áudio do computador.";const s=$("publicVoiceStatus");if(s&&publicMode)s.textContent="Falha no áudio. Verifique volume e saída de som deste dispositivo.";};
+ window.speechSynthesis.speak(utter);
+}
+function fillVoices(){
+ if(!("speechSynthesis" in window)){$("voiceStatus").textContent="Leitura de voz não suportada neste navegador.";return;}
+ voices=window.speechSynthesis.getVoices()||[];
+ const select=$("voiceSelect"),old=select.value;
+ select.innerHTML='<option value="auto">Escolher voz feminina em português</option>';
+ const pt=voices.filter(v=>/^pt/i.test(v.lang));
+ const female=pt.filter(v=>/female|feminina|maria|francisca|luciana|camila|helena|brasil/i.test(v.name));
+ const ordered=[...female,...pt.filter(v=>!female.includes(v))];
+ ordered.forEach(v=>{const o=document.createElement("option");o.value=v.name;o.textContent=v.name+" ("+v.lang+")";select.appendChild(o);});
+ if(ordered.some(v=>v.name===old))select.value=old;
+ $("voiceStatus").textContent=pt.length?"Vozes em português detectadas: "+pt.length+". A identificação de voz feminina depende do nome informado pelo sistema.":"Nenhuma voz em português detectada; será usada a voz padrão disponível.";
+}
+$("patientForm").addEventListener("submit",e=>{e.preventDefault();const name=$("patientName").value.trim(),room=$("room").value.trim();if(!name||!room){notify("Informe o nome e o consultório.");return;}const now=new Date();patients.push({id:String(Date.now())+Math.random().toString(16).slice(2,6),name,room,service:$("service").value,status:"Aguardando",day:todayKey,created:Date.now(),time:now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})});save();render();$("patientName").value="";$("patientName").focus();notify("Paciente adicionado à fila.");});
+$("patientList").addEventListener("click",e=>{const b=e.target.closest("button[data-action]");if(!b)return;const p=patients.find(x=>x.id===b.dataset.id);if(!p)return;switch(b.dataset.action){case"call":p.status="Chamado";p.calledAt=Date.now();save();render();announce(p);break;case"attend":p.status="Atendido";p.attendedAt=Date.now();save();render();break;case"restore":p.status="Aguardando";save();render();break;case"remove":if(confirm("Remover "+p.name+" da fila?")){patients=patients.filter(x=>x.id!==p.id);save();render();}}});
+$("callNext").addEventListener("click",()=>{const p=patients.filter(x=>x.day===todayKey&&x.status==="Aguardando").sort((a,b)=>a.created-b.created)[0];if(!p){notify("Não há pacientes aguardando.");return;}p.status="Chamado";p.calledAt=Date.now();save();render();announce(p);});
+$("repeatLast").addEventListener("click",()=>{if(!lastAnnouncement){notify("Ainda não houve chamada nesta sessão.");return;}if(!("speechSynthesis"in window)){notify("Leitura de voz indisponível neste navegador.");return;}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(lastAnnouncement);u.lang="pt-BR";u.rate=.88;u.pitch=1.05;const v=voices.find(x=>x.name===$("voiceSelect").value)||voices.find(x=>/^pt/i.test(x.lang));if(v){u.voice=v;u.lang=v.lang;}window.speechSynthesis.speak(u);});
+$("testVoice").addEventListener("click",()=>{lastAnnouncement="Teste de voz. Chamador de pacientes MARKYS. Por favor, compareça ao consultório.";if(!("speechSynthesis"in window)){notify("Leitura de voz indisponível neste navegador.");return;}const u=new SpeechSynthesisUtterance(lastAnnouncement);u.lang="pt-BR";u.rate=.88;u.pitch=1.05;const v=voices.find(x=>x.name===$("voiceSelect").value)||voices.find(x=>/^pt/i.test(x.lang));if(v){u.voice=v;u.lang=v.lang;}window.speechSynthesis.cancel();window.speechSynthesis.speak(u);});
+$("clearAttended").addEventListener("click",()=>{const n=patients.filter(p=>p.day===todayKey&&p.status==="Atendido").length;if(!n){notify("Não há atendidos para limpar.");return;}if(confirm("Remover "+n+" paciente(s) atendido(s) da lista de hoje?")){patients=patients.filter(p=>!(p.day===todayKey&&p.status==="Atendido"));save();render();}});
+$("exportCsv").addEventListener("click",()=>{const rows=[["Nome","Consultório","Atendimento","Status","Data","Hora de chegada"],...patients.filter(p=>p.day===todayKey).map(p=>[p.name,p.room,p.service,p.status,p.day,p.time])];const csv="\ufeff"+rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="markys-fila-"+todayKey+".csv";a.click();URL.revokeObjectURL(url);});
+$("search").addEventListener("input",render);
+if(publicMode){fillVoices();if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=fillVoices;const enable=$("enablePublicVoice");if(enable)enable.addEventListener("click",()=>{publicVoiceEnabled=true;enable.textContent="✓ Voz ativada nesta tela";enable.disabled=true;const status=$("publicVoiceStatus");if(status)status.textContent="Ativando áudio…";const active=patients.filter(p=>p.day===todayKey&&p.status==="Chamado").sort((a,b)=>(b.calledAt||b.created)-(a.calledAt||a.created));if(active.length){const p=active[0];lastPublicAnnouncementKey=String(p.id)+"-"+String(p.calledAt||p.created);announce(p);}else{const u=new SpeechSynthesisUtterance("Áudio ativado. Aguardando chamadas de pacientes.");u.lang="pt-BR";u.rate=.9;u.volume=1;u.onend=()=>{if(status)status.textContent="Voz ativada. Anúncios automáticos habilitados nesta tela.";};u.onerror=()=>{if(status)status.textContent="Não foi possível reproduzir. Verifique o volume deste dispositivo.";};window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}});load().then(renderPublic);if(!serverMode)window.addEventListener("storage",e=>{if(e.key===KEY){load().then(renderPublic);}});setInterval(()=>{load().then(renderPublic);},1200);}else{fillVoices();if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=fillVoices;load().then(render);const opener=$("openDisplay");if(opener)opener.addEventListener("click",()=>{const display=window.open(location.href.split("?")[0]+"?painel=1","markysSalaEspera");if(!display)notify("O navegador bloqueou a janela. Permita pop-ups para este arquivo e tente novamente.");});}
+})();
+</script>
+</body>
+</html>
