@@ -95,6 +95,8 @@ try {
         }
       } elseif ($path -eq "/" -or $path -eq "/index.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "index.html")); $type = "text/html; charset=utf-8"
+      } elseif ($path -eq "/consultorio" -or $path -eq "/consultorio.html") {
+        $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "consultorio.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/logo-markys.png" -and (Test-Path (Join-Path $Root "logo-markys.png"))) {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "logo-markys.png")); $type = "image/png"
       } elseif ($path -eq "/sala-espera") {
