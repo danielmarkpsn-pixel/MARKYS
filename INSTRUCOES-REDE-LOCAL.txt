@@ -18,25 +18,20 @@ Esta versão compartilha a fila por HTTP dentro da rede local. Não possui login
 3. INICIAR O SERVIDOR
 1. Dê dois cliques em INICIAR-SERVIDOR-MARKYS.bat.
 2. O servidor usa a porta TCP 2222. Se a porta já estiver ocupada, ele exibirá um erro em vez de escolher outra porta.
-3. A janela mostrará os endereços da recepção e da sala de espera. Use os endereços reais exibidos, não exemplos.
+3. A janela mostrará somente três endereços: Recepção, Sala e Consultório. Use os endereços reais exibidos, não exemplos.
 4. Mantenha a janela do PowerShell aberta; fechá-la interrompe a comunicação.
 
 4. FIREWALL DO WINDOWS
 Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra de entrada TCP para a porta local 2222, permitindo a conexão somente no perfil Privado. Não desative o firewall e não habilite a regra em redes públicas. O Windows pode exigir permissão de administrador.
 
-5. ABRIR A RECEPÇÃO, OS PAINÉIS PROFISSIONAIS E A TELA DA SALA
-1. No computador da recepção, abra o endereço-base mostrado na janela do servidor.
-2. Na TV/tela da sala de espera, abra o endereço que termina em /?painel=1.
-3. Para cada profissional, use o link individual que a janela do PowerShell mostra, correspondente ao tipo de atendimento. Exemplo: http://IP-DO-SERVIDOR:2222/consultorio?servico=Consulta. Todos usam o mesmo IP do computador servidor, mas links diferentes por serviço.
-4. No painel profissional, clique em “Chamar na sala” para chamar o paciente pelo tipo de atendimento (não pelo consultório). Clique em “Atender” quando começar; o cartão fica vermelho na tela da sala. Clique em “Liberar” ao concluir aquele serviço; o cartão fica verde.
-5. O paciente permanece disponível nos painéis dos outros serviços cadastrados até que todos os serviços dele sejam liberados.
-6. Para voz na tela adicional, clique em “Ativar voz nesta tela” uma vez nesse dispositivo e confira o volume.
+5. ABRIR OS TRÊS ENDEREÇOS
+1. **Recepção:** abra o endereço-base mostrado na janela do servidor.
+2. **Sala de espera:** na TV/tela da sala, abra o endereço que termina em `/?painel=1`.
+3. **Consultório:** todos os profissionais usam o mesmo endereço `/consultorio`. Cada profissional escolhe o seu tipo de serviço no menu dentro do painel; não existe mais um link diferente por serviço.
+4. No painel Consultório, clique em “Chamar na sala” para chamar o paciente pelo tipo de atendimento. Clique em “Atender” quando começar; o cartão fica vermelho na tela da sala. Clique em “Liberar” ao concluir aquele serviço; o cartão fica verde.
+5. O paciente permanece disponível para os demais serviços cadastrados até que todos sejam liberados.
+6. Para voz na tela de espera, clique em “Ativar voz nesta tela” uma vez nesse dispositivo e confira o volume.
 7. Faça um teste com um paciente fictício antes de começar. Depois, remova o registro de teste.
-
-1. No computador da recepção, abra o endereço-base mostrado na janela do servidor.
-2. No dispositivo da sala de espera, abra o endereço de sala mostrado, que termina em /?painel=1.
-3. Para voz na tela adicional, clique em “Ativar voz nesta tela” uma vez nesse dispositivo e confira o volume.
-4. Faça um teste com um paciente fictício antes de começar. Depois, remova o registro de teste.
 
 6. SOLUÇÃO DE PROBLEMAS
 - Endereço não abre: confira se os dispositivos estão na mesma rede, se o servidor segue aberto e se o IP foi digitado corretamente.
