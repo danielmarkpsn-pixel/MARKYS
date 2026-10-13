@@ -1,5 +1,5 @@
 MARKYS — CONFIGURAÇÃO E ACESSO À REDE LOCAL
-Chamador de pacientes · Porta TCP fixa 2222
+Chamador de Pacientes Digital · Porta TCP fixa 2222
 Desenvolvido por Daniel Marques via IA
 
 IMPORTANTE
@@ -8,7 +8,7 @@ Esta versão compartilha a fila por HTTP dentro da rede local. Não possui login
 1. BAIXAR E PREPARAR
 1. Abra o repositório GitHub MARKYS e clique em Code > Download ZIP.
 2. Extraia todos os arquivos para uma pasta permanente no computador da recepção, por exemplo Documentos\MARKYS. Não execute diretamente dentro do ZIP.
-3. Confirme que index.html, servidor-markys.ps1, INICIAR-SERVIDOR-MARKYS.bat e fila.json estão na mesma pasta.
+3. Confirme que index.html, logo-Markys.png, servidor-markys.ps1, INICIAR-SERVIDOR-MARKYS.bat e fila.json estão na mesma pasta.
 
 2. CONECTAR OS DISPOSITIVOS
 1. Conecte a recepção e a tela da sala de espera à mesma rede local confiável (Wi-Fi interno ou rede cabeada).
@@ -32,7 +32,7 @@ Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra d
 
 6. SOLUÇÃO DE PROBLEMAS
 - Endereço não abre: confira se os dispositivos estão na mesma rede, se o servidor segue aberto e se o IP foi digitado corretamente.
-- Tela remota não atualiza: recarregue a página e verifique a janela do servidor.
+- Tela remota não atualiza: confira se todos acessam o mesmo endereço IP do computador servidor e se a janela do servidor segue aberta.
 - Erro de porta ocupada: outra aplicação está usando TCP 2222. Feche a instância duplicada do MARKYS ou peça ao TI para verificar a porta.
 - Firewall bloqueando: libere TCP 2222 somente no perfil Privado, conforme a política de TI.
 - Voz não toca: clique em “Ativar voz nesta tela”, verifique o volume e permita áudio no navegador.
@@ -46,3 +46,7 @@ Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra d
 - Para encerrar, volte à janela do PowerShell e pressione Ctrl+C.
 
 FIM
+
+
+ATUALIZAÇÃO DA FILA
+A recepção e as telas adicionais devem acessar o mesmo servidor usando os endereços http://IP-DO-COMPUTADOR:2222/ fornecidos na janela PowerShell. Não abra index.html diretamente nem use IPs de computadores diferentes. As páginas conectadas ao servidor atualizam a fila automaticamente.
