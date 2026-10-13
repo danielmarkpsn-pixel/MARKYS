@@ -48,6 +48,18 @@ Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra d
 - Não encaminhe a porta 2222 no roteador para a internet.
 - Para encerrar, volte à janela do PowerShell e pressione Ctrl+C.
 
+
+8. CONFIGURAR VOZ NEURAL FEMININA POR IA (OPCIONAL)
+A chamada usa a voz neural pt-BR-FranciscaNeural do Microsoft Azure Speech. A integração só gera áudio quando um profissional clica em “Chamar na sala”. Se não houver configuração, o painel tenta usar a voz local do navegador.
+
+1. Crie um recurso Speech no portal Microsoft Azure e copie a chave e a região do recurso. O serviço pode gerar custos conforme o plano e o uso; confira os preços e limites da sua conta antes de ativar.
+2. No computador que executa o servidor, abra o Prompt de Comando do Windows (CMD) com a mesma conta que inicia o MARKYS e execute, substituindo os valores pelos dados do seu recurso:
+   setx AZURE_SPEECH_KEY "COLE_SUA_CHAVE_AQUI"
+   setx AZURE_SPEECH_REGION "REGIAO_DO_RECURSO"
+3. Feche e abra novamente a janela do servidor MARKYS para que as variáveis sejam carregadas. Não coloque a chave em index.html, em arquivos publicados no GitHub, nem a envie por mensagem.
+4. Na tela da sala de espera, clique em “Ativar voz nesta tela” uma vez e teste uma chamada. O estado da tela indicará se a voz neural está sendo reproduzida; se a configuração falhar, será tentada a voz do navegador.
+5. A voz neural exige internet no computador do servidor. O nome do paciente e o texto da chamada são enviados ao Microsoft Azure para gerar o áudio. Confirme a autorização da clínica e as regras de privacidade aplicáveis antes de usar dados reais.
+
 FIM
 
 
