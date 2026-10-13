@@ -18,7 +18,7 @@ try {
   Write-Host "===============================================" -ForegroundColor Cyan
   Write-Host "Recepcao: http://127.0.0.1:$Port/"
   Write-Host "Tela sala de espera: http://127.0.0.1:$Port/?painel=1"
-  Write-Host "Painel profissional: http://127.0.0.1:$Port/consultorio"
+  Write-Host "Consultorio: http://127.0.0.1:$Port/consultorio"
   Write-Host ""
   Write-Host "Enderecos para outros dispositivos:" -ForegroundColor Yellow
   $ips = @()
@@ -45,11 +45,7 @@ try {
     foreach ($ip in $ips) {
       Write-Host ("Recepcao: http://{0}:{1}/" -f $ip, $Port)
       Write-Host ("Sala:     http://{0}:{1}/?painel=1" -f $ip, $Port)
-      Write-Host ("Painel profissional (escolher serviço): http://{0}:{1}/consultorio" -f $ip, $Port)
-      foreach ($service in @("Cirurgia","Consulta","Laboratório","Raio-X","Audiometria","ASO","Exames complementares","Medicina ocupacional","Retorno","Teste ergométrico","Ultrassom","Outros")) {
-        $encodedService = [System.Uri]::EscapeDataString($service)
-        Write-Host ("  {0}: http://{1}:{2}/consultorio?servico={3}" -f $service, $ip, $Port, $encodedService)
-      }
+      Write-Host ("Consultorio (selecionar servico dentro do painel): http://{0}:{1}/consultorio" -f $ip, $Port)
     }
   }
   # Abre automaticamente o sistema no navegador da recepcao.
