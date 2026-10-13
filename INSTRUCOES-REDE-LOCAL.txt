@@ -53,3 +53,10 @@ FIM
 
 ATUALIZAÇÃO DA FILA
 A recepção e as telas adicionais devem acessar o mesmo servidor usando os endereços http://IP-DO-COMPUTADOR:2222/ fornecidos na janela PowerShell. Não abra index.html diretamente nem use IPs de computadores diferentes. As páginas conectadas ao servidor atualizam a fila automaticamente.
+
+
+REGRAS DE CHAMADA E ATENDIMENTO POR SERVICO
+- Na recepção, selecione explicitamente um consultório e pelo menos um tipo de atendimento.
+- A recepção não chama pacientes nem finaliza atendimentos. A chamada só começa quando o profissional clica em “Chamar na sala” no painel Consultório.
+- No painel Consultório, o profissional escolhe se o chamado exibirá o tipo de atendimento ou o consultório.
+- Ao liberar um serviço, o paciente permanece na fila enquanto houver outros serviços pendentes. O status geral só muda para Atendido quando todos os serviços estiverem liberados.
