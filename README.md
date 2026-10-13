@@ -48,3 +48,10 @@ O MARKYS usa apenas três endereços, todos com o mesmo IP do computador servido
 - **Consultório:** `http://IP-DO-SERVIDOR:2222/consultorio`
 
 No painel único de Consultório, cada profissional seleciona seu tipo de serviço no menu. O fluxo continua: **Chamar na sala**, **Atender** (cartão vermelho) e **Liberar** (cartão verde). O paciente continua disponível para os demais serviços cadastrados até que todos sejam liberados. Substitua `IP-DO-SERVIDOR` pelo IP real exibido na janela do PowerShell.
+
+
+## Regras de chamada e atendimento por serviço
+- Na recepção, o operador deve selecionar explicitamente um consultório e pelo menos um tipo de atendimento.
+- A recepção não chama pacientes nem finaliza atendimentos; a chamada só começa quando o profissional clica em **Chamar na sala** no painel Consultório.
+- O profissional escolhe se o chamado exibirá o tipo de atendimento ou o consultório.
+- Ao liberar um serviço, o paciente permanece na fila enquanto houver outros serviços pendentes. O status geral só muda para Atendido quando todos os serviços estiverem liberados.
