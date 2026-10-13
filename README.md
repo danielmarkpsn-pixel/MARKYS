@@ -40,3 +40,10 @@ A porta é fixa: se a TCP 2222 já estiver ocupada, o servidor não muda automat
 - Relatório em PDF A4 vertical, com posição, atendimento, consultório, status, entrada e saída.
 - Tela de espera mostra até cinco chamadas recentes e até cinco próximos pacientes.
 - As páginas abertas pelo mesmo servidor sincronizam a fila automaticamente.
+
+## Painéis individuais por tipo de atendimento
+O servidor agora disponibiliza `consultorio.html` em `/consultorio`. Cada profissional pode usar o mesmo IP do computador servidor, com um endereço diferente por serviço. Ao iniciar o servidor, a janela PowerShell mostra os links prontos de Cirurgia, Consulta, Laboratório, Raio-X e demais serviços.
+
+Fluxo: o profissional clica em **Chamar na sala**; a tela de espera anuncia o nome e o tipo de atendimento. Ao clicar em **Atender**, o cartão do paciente fica vermelho na tela da sala. Ao clicar em **Liberar**, fica verde. O paciente continua disponível nos painéis dos outros serviços cadastrados até que todos os serviços sejam liberados.
+
+Exemplo de endereço: `http://IP-DO-SERVIDOR:2222/consultorio?servico=Consulta`. Substitua pelo IP real mostrado ao iniciar o servidor. Todos os dispositivos devem usar o mesmo servidor e estar na rede local confiável.
