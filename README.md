@@ -14,7 +14,7 @@ Clone independente baseado na estrutura do FAVMED, com identidade visual própri
 2. Extraia todos os arquivos para uma pasta no computador da recepção (não execute dentro do ZIP).
 3. Execute `INICIAR-SERVIDOR-MARKYS.bat`.
 4. Se o Firewall do Windows perguntar, permita somente em redes privadas confiáveis. Se necessário, peça ao suporte de TI para criar uma regra de entrada TCP para a porta **2222**, apenas no perfil Privado.
-5. A janela do PowerShell mostrará os endereços da recepção e do painel. Na tela adicional, use o endereço da sala que termina em `/?painel=1`.
+5. A janela do PowerShell mostrará somente três endereços: Recepção, Sala de espera e Consultório. O profissional seleciona o tipo de serviço dentro do próprio painel.
 6. Mantenha a janela do servidor aberta enquanto o sistema estiver em uso.
 
 ## Recursos
@@ -41,9 +41,10 @@ A porta é fixa: se a TCP 2222 já estiver ocupada, o servidor não muda automat
 - Tela de espera mostra até cinco chamadas recentes e até cinco próximos pacientes.
 - As páginas abertas pelo mesmo servidor sincronizam a fila automaticamente.
 
-## Painéis individuais por tipo de atendimento
-O servidor agora disponibiliza `consultorio.html` em `/consultorio`. Cada profissional pode usar o mesmo IP do computador servidor, com um endereço diferente por serviço. Ao iniciar o servidor, a janela PowerShell mostra os links prontos de Cirurgia, Consulta, Laboratório, Raio-X e demais serviços.
+## Três endereços de acesso
+O MARKYS usa apenas três endereços, todos com o mesmo IP do computador servidor:
+- **Recepção:** `http://IP-DO-SERVIDOR:2222/`
+- **Sala de espera:** `http://IP-DO-SERVIDOR:2222/?painel=1`
+- **Consultório:** `http://IP-DO-SERVIDOR:2222/consultorio`
 
-Fluxo: o profissional clica em **Chamar na sala**; a tela de espera anuncia o nome e o tipo de atendimento. Ao clicar em **Atender**, o cartão do paciente fica vermelho na tela da sala. Ao clicar em **Liberar**, fica verde. O paciente continua disponível nos painéis dos outros serviços cadastrados até que todos os serviços sejam liberados.
-
-Exemplo de endereço: `http://IP-DO-SERVIDOR:2222/consultorio?servico=Consulta`. Substitua pelo IP real mostrado ao iniciar o servidor. Todos os dispositivos devem usar o mesmo servidor e estar na rede local confiável.
+No painel único de Consultório, cada profissional seleciona seu tipo de serviço no menu. O fluxo continua: **Chamar na sala**, **Atender** (cartão vermelho) e **Liberar** (cartão verde). O paciente continua disponível para os demais serviços cadastrados até que todos sejam liberados. Substitua `IP-DO-SERVIDOR` pelo IP real exibido na janela do PowerShell.
