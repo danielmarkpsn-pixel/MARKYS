@@ -23,7 +23,6 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const services=["Cirurgia","Consulta","Laboratório","Raio-X","Audiometria","ASO","Exames complementares","Medicina ocupacional","Retorno","Teste ergométrico","Ultrassom","Outros"];
-const params=new URLSearchParams(location.search);const requested=params.get("servico");if(requested&&services.includes(requested))$("service").value=requested;
 let patients=[];let busy=false;
 function servicesOf(p){if(Array.isArray(p.services)&&p.services.length)return p.services;return String(p.service||"Consulta").split(",").map(s=>s.trim()).filter(Boolean);}
 function stateFor(p,service){if(!p.serviceStates||typeof p.serviceStates!=="object")p.serviceStates={};if(!p.serviceStates[service])p.serviceStates[service]={status:"Aguardando",updatedAt:p.created||Date.now()};return p.serviceStates[service];}
