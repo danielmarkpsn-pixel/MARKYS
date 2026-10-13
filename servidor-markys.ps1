@@ -98,44 +98,6 @@ try {
             $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8"
           } catch { $status = "400 Bad Request"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"invalid JSON"}'); $type = "application/json; charset=utf-8" }
         }
-      } elseif ($path -eq "/api/tts" -and $method -eq "POST") {
-        $speechKey = [Environment]::GetEnvironmentVariable("AZURE_SPEECH_KEY")
-        $speechRegion = [Environment]::GetEnvironmentVariable("AZURE_SPEECH_REGION")
-        if ([string]::IsNullOrWhiteSpace($speechKey) -or [string]::IsNullOrWhiteSpace($speechRegion)) {
-          $status = "503 Service Unavailable"; $type = "application/json; charset=utf-8"
-          $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"Azure Speech não configurado no servidor"}')
-        } elseif ($contentLength -gt 20000 -or $read -ne $contentLength) {
-          $status = "413 Payload Too Large"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"Texto muito longo"}'); $type = "application/json; charset=utf-8"
-        } else {
-          $httpClient = $null; $httpContent = $null; $azureResponse = $null
-          try {
-            $ttsRequest = ConvertFrom-Json -InputObject ([System.Text.Encoding]::UTF8.GetString($bodyBytes))
-            $ttsText = [string]$ttsRequest.text
-            if ([string]::IsNullOrWhiteSpace($ttsText) -or $ttsText.Length -gt 500) { throw "Texto inválido" }
-            $escapedText = [System.Security.SecurityElement]::Escape($ttsText)
-            $ssml = '<?xml version="1.0" encoding="UTF-8"?><speak version="1.0" xml:lang="pt-BR"><voice name="pt-BR-FranciscaNeural"><prosody rate="-5%">' + $escapedText + '</prosody></voice></speak>'
-            $endpoint = "https://$speechRegion.tts.speech.microsoft.com/cognitiveservices/v1"
-            $httpClient = New-Object System.Net.Http.HttpClient
-            $httpClient.Timeout = [TimeSpan]::FromSeconds(25)
-            $httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", $speechKey)
-            $httpClient.DefaultRequestHeaders.Add("X-Microsoft-OutputFormat", "audio-24khz-48kbitrate-mono-mp3")
-            $httpContent = New-Object System.Net.Http.StringContent($ssml, [System.Text.Encoding]::UTF8, "application/ssml+xml")
-            $azureResponse = $httpClient.PostAsync($endpoint, $httpContent).GetAwaiter().GetResult()
-            if (-not $azureResponse.IsSuccessStatusCode) {
-              throw ("Azure Speech retornou HTTP " + [int]$azureResponse.StatusCode)
-            }
-            $responseBytes = $azureResponse.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult()
-            $type = "audio/mpeg"
-          } catch {
-            Write-Host ("Erro na voz neural: " + $_.Exception.Message) -ForegroundColor Yellow
-            $status = "502 Bad Gateway"; $type = "application/json; charset=utf-8"
-            $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"Não foi possível gerar a voz neural. Verifique a configuração Azure Speech e a conexão com a internet."}')
-          } finally {
-            if ($null -ne $azureResponse) { $azureResponse.Dispose() }
-            if ($null -ne $httpContent) { $httpContent.Dispose() }
-            if ($null -ne $httpClient) { $httpClient.Dispose() }
-          }
-        }
       } elseif ($path -eq "/" -or $path -eq "/index.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "index.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/consultorio" -or $path -eq "/consultorio.html") {
