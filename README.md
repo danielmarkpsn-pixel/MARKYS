@@ -30,3 +30,13 @@ O servidor usa HTTP sem login ou criptografia. Use apenas em uma rede interna co
 A porta é fixa: se a TCP 2222 já estiver ocupada, o servidor não muda automaticamente para outra porta. O suporte de TI deverá liberar ou escolher outra porta e atualizar o script e as instruções em conjunto.
 
 **Crédito:** Desenvolvido por Daniel Marques via IA.
+
+
+## Atualizações desta versão
+- Marca **Chamador de Pacientes Digital** e logotipo original do FAVMED renomeado para `logo-Markys.png`.
+- Limite de 10 consultórios e opções de atendimento: cirurgia, consulta, laboratório, raio-X, audiometria, ASO, exames complementares, medicina ocupacional, retorno, teste ergométrico, ultrassom e outros.
+- Nomes automaticamente em maiúsculas; edição sem recriar o paciente; prioridade coloca o paciente no topo.
+- Registro de hora de saída ao marcar como atendido.
+- Relatório em PDF A4 vertical, com posição, atendimento, consultório, status, entrada e saída.
+- Tela de espera mostra até cinco chamadas recentes e até cinco próximos pacientes.
+- As páginas abertas pelo mesmo servidor sincronizam a fila automaticamente.
