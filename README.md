@@ -55,3 +55,10 @@ No painel único de Consultório, cada profissional seleciona seu tipo de servi�
 - A recepção não chama pacientes nem finaliza atendimentos; a chamada só começa quando o profissional clica em **Chamar na sala** no painel Consultório.
 - O profissional escolhe se o chamado exibirá o tipo de atendimento ou o consultório.
 - Ao liberar um serviço, o paciente permanece na fila enquanto houver outros serviços pendentes. O status geral só muda para Atendido quando todos os serviços estiverem liberados.
+
+
+## Atualização das chamadas públicas
+- A tela da sala de espera exibe todas as chamadas ativas, inclusive quando o mesmo paciente foi chamado para mais de um atendimento.
+- As chamadas aparecem pela ordem em que os profissionais clicaram em **Chamar na sala** (da mais antiga para a mais recente).
+- Os anúncios de voz são enfileirados, sem cancelar a chamada anterior quando outra chamada é feita logo em seguida.
+- O módulo de apresentação de fotos e vídeos com duração de 20 segundos por foto ainda não faz parte do MARKYS; essa função precisa ser incorporada separadamente antes de ser usada neste sistema.
