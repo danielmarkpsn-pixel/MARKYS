@@ -68,6 +68,7 @@ let lastAnnouncement="";
 let voices=[];
 let publicVoiceEnabled=false;
 let lastPublicAnnouncementKey="";
+const announcedPublicCallKeys=new Set();
 const $=id=>document.getElementById(id);
 const todayKey=new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2,"0")+"-"+String(new Date().getDate()).padStart(2,"0");
 if(publicMode){document.body.classList.add("public-mode");document.title="MARKYS - Chamador de Pacientes Digital | Sala de espera";}
@@ -94,18 +95,22 @@ function renderPublic(){
   if(entries.length)active.push(...entries);
   else if(p.status==="Chamado")active.push({p,service:p.calledLabel||p.calledService||p.activeService||p.room||servicesText(p),status:"Chamado",updatedAt:p.calledAt||p.created||0,serviceKey:p.calledService||p.activeService||servicesText(p)});
  });
- active.sort((a,b)=>b.updatedAt-a.updatedAt);
- // A tela pública destaca somente a chamada ativa mais recente; serviços liberados não ficam em destaque.
- const current=active[0]||null;
+ active.sort((a,b)=>a.updatedAt-b.updatedAt);
+ // Mostra todas as chamadas ativas. A ordem é a mesma dos cliques em "Chamar na sala".
  const box=$("calledDisplay");if(!box)return;
- box.innerHTML=current?'<article class="called-card '+(current.status==="Atendendo"?"state-attending":"")+'"><div class="call-label">'+(current.status==="Atendendo"?"EM ATENDIMENTO":"PACIENTE CHAMADO")+'</div><div class="call-name">'+esc(current.p.name)+'</div><div class="call-room">➜ '+esc(current.service)+'</div></article>':'<div class="no-calls"><strong>Aguardando próxima chamada</strong>Por favor, aguarde. Seu nome será anunciado aqui.</div>';
+ box.innerHTML=active.length?active.map(item=>'<article class="called-card '+(item.status==="Atendendo"?"state-attending":"")+'"><div class="call-label">'+(item.status==="Atendendo"?"EM ATENDIMENTO":"PACIENTE CHAMADO")+'</div><div class="call-name">'+esc(item.p.name)+'</div><div class="call-room">➜ '+esc(item.service)+'</div></article>').join(""):'<div class="no-calls"><strong>Aguardando próxima chamada</strong>Por favor, aguarde. Seu nome será anunciado aqui.</div>';
  const activePatientIds=new Set(active.map(x=>String(x.p.id)));
  const next=patients.filter(p=>p.day===todayKey&&p.status!=="Atendido"&&servicesText(p)&&!activePatientIds.has(String(p.id))&&!Object.values(p.serviceStates||{}).some(st=>st&&["Chamado","Atendendo"].includes(st.status))).sort((a,b)=>(Number(!!b.priority)-Number(!!a.priority))||a.created-b.created).slice(0,5);
  const queueBox=$("publicQueueList");if(queueBox)queueBox.innerHTML=next.length?next.map((p,i)=>'<div class="public-queue-item"><b>'+(i+1)+'</b><span>'+esc(p.name)+(p.priority?' <small>PRIORIDADE</small>':"")+'<small>'+esc(servicesText(p))+'</small></span></div>').join(""):'<div class="public-queue-empty">Não há pacientes aguardando no momento.</div>';
- if(publicVoiceEnabled&&current&&current.status==="Chamado"){
-  const key=String(current.p.id)+"-"+String(current.serviceKey)+"-"+String(current.updatedAt);
-  if(key!==lastPublicAnnouncementKey){lastPublicAnnouncementKey=key;announce({...current.p,room:current.service});}
- } else if(!current){lastPublicAnnouncementKey="";}
+ if(publicVoiceEnabled){
+  for(const item of active){
+   if(item.status!=="Chamado")continue;
+   const key=String(item.p.id)+"-"+String(item.serviceKey)+"-"+String(item.updatedAt);
+   if(announcedPublicCallKeys.has(key))continue;
+   announcedPublicCallKeys.add(key);
+   announce({...item.p,room:item.service},false,true);
+  }
+ }
 }
 function voiceLooksFeminine(v){
  return /female|feminina|maria|francisca|luciana|camila|helena|samantha|joana|vitoria|vit[oó]ria|sofia|sophia|fernanda|bruna|leticia|letícia|raquel|manuela/i.test(v.name||"");
@@ -118,9 +123,9 @@ function choosePortugueseFemaleVoice(){
  const pool=ptBR.length?ptBR:pt;
  return pool.find(voiceLooksFeminine)||pool.find(v=>/google.*portugu[eê]s.*brasil|francisca|microsoft.*(female|feminina)/i.test(v.name||""))||pool[0]||voices.find(voiceLooksFeminine)||null;
 }
-function speakMarkys(text,repeat=false){
+function speakMarkys(text,repeat=false,enqueue=false){
  if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){notify("A voz não está disponível neste navegador.");return false;}
- const synth=window.speechSynthesis;synth.cancel();
+ const synth=window.speechSynthesis;if(!enqueue)synth.cancel();
  const utter=new SpeechSynthesisUtterance(String(text||""));
  const voice=choosePortugueseFemaleVoice();
  utter.lang=(voice&&voice.lang)||"pt-BR";utter.rate=repeat ? 0.88 : 0.90;utter.pitch=1.03;utter.volume=1;
@@ -130,12 +135,12 @@ function speakMarkys(text,repeat=false){
  utter.onerror=()=>{const status=$("voiceStatus");if(status)status.textContent="Não foi possível reproduzir a voz. Verifique o volume e as vozes disponíveis.";const ps=$("publicVoiceStatus");if(ps&&publicMode)ps.textContent="Falha no áudio. Verifique o volume e as vozes disponíveis.";};
  synth.speak(utter);return true;
 }
-function announce(p){
+function announce(p,repeat=false,enqueue=false){
  const name=String(p.name||"").trim(),destination=String(p.room||"").trim();
  const text=/consult[oó]rio/i.test(destination)
   ?"Atenção. Paciente, "+name+". Por favor, dirija-se ao "+destination+"."
   :"Atenção. Paciente, "+name+". Por favor, compareça para "+destination+".";
- lastAnnouncement=text;speakMarkys(text);
+ lastAnnouncement=text;speakMarkys(text,repeat,enqueue);
 }
 function fillVoices(){
  if(!("speechSynthesis" in window)){$("voiceStatus").textContent="Leitura de voz não suportada neste navegador.";return;}
