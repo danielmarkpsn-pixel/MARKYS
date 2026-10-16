@@ -5,11 +5,15 @@ $PortCandidates = @(2222)
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $DataFile = Join-Path $Root "fila.json"
 $MediaFile = Join-Path $Root "midia.json"
+$ProfessionalsFile = Join-Path $Root "profissionais.json"
+$RecordsFile = Join-Path $Root "prontuarios.json"
 $SlideshowDir = Join-Path $Root "midia-sala"
 if (-not (Test-Path $SlideshowDir)) { New-Item -ItemType Directory -Path $SlideshowDir | Out-Null }
 $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 if (-not (Test-Path $DataFile)) { [System.IO.File]::WriteAllText($DataFile, "[]", $Utf8NoBom) }
 if (-not (Test-Path $MediaFile)) { [System.IO.File]::WriteAllText($MediaFile, '{"url":""}', $Utf8NoBom) }
+if (-not (Test-Path $ProfessionalsFile)) { [System.IO.File]::WriteAllText($ProfessionalsFile, "[]", $Utf8NoBom) }
+if (-not (Test-Path $RecordsFile)) { [System.IO.File]::WriteAllText($RecordsFile, "[]", $Utf8NoBom) }
 $listener = $null
 foreach ($candidatePort in $PortCandidates) {
   $candidate = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, $candidatePort)
@@ -165,6 +169,16 @@ try {
             $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8"
           } catch { $status = "400 Bad Request"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"invalid JSON"}'); $type = "application/json; charset=utf-8" }
         }
+      } elseif ($path -eq "/api/professionals" -and $method -eq "GET") {
+        $responseBytes = [System.IO.File]::ReadAllBytes($ProfessionalsFile); $type = "application/json; charset=utf-8"
+      } elseif ($path -eq "/api/professionals" -and $method -eq "POST") {
+        if ($contentLength -gt 262144 -or $read -ne $contentLength) { $status = "413 Payload Too Large"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Payload too large") }
+        else { try { $json = [System.Text.Encoding]::UTF8.GetString($bodyBytes); $parsed = ConvertFrom-Json -InputObject $json; if ($parsed -isnot [System.Array] -and $null -ne $parsed) { throw "Expected JSON array" }; [System.IO.File]::WriteAllText($ProfessionalsFile, $json, $Utf8NoBom); $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8" } catch { $status = "400 Bad Request"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"invalid JSON"}'); $type = "application/json; charset=utf-8" } }
+      } elseif ($path -eq "/api/records" -and $method -eq "GET") {
+        $responseBytes = [System.IO.File]::ReadAllBytes($RecordsFile); $type = "application/json; charset=utf-8"
+      } elseif ($path -eq "/api/records" -and $method -eq "POST") {
+        if ($contentLength -gt 1048576 -or $read -ne $contentLength) { $status = "413 Payload Too Large"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Payload too large") }
+        else { try { $json = [System.Text.Encoding]::UTF8.GetString($bodyBytes); $parsed = ConvertFrom-Json -InputObject $json; if ($parsed -isnot [System.Array] -and $null -ne $parsed) { throw "Expected JSON array" }; [System.IO.File]::WriteAllText($RecordsFile, $json, $Utf8NoBom); $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8" } catch { $status = "400 Bad Request"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"invalid JSON"}'); $type = "application/json; charset=utf-8" } }
       } elseif ($path -eq "/" -or $path -eq "/index.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "index.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/consultorio" -or $path -eq "/consultorio.html") {
