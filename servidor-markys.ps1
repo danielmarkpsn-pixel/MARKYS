@@ -1,14 +1,30 @@
 # MARKYS local HTTP server - Windows PowerShell 5.1+
 $ErrorActionPreference = "Stop"
 $Port = 2222
+$PortCandidates = @(2222)
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $DataFile = Join-Path $Root "fila.json"
+$MediaFile = Join-Path $Root "midia.json"
+$SlideshowDir = Join-Path $Root "midia-sala"
+if (-not (Test-Path $SlideshowDir)) { New-Item -ItemType Directory -Path $SlideshowDir | Out-Null }
 $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 if (-not (Test-Path $DataFile)) { [System.IO.File]::WriteAllText($DataFile, "[]", $Utf8NoBom) }
-$listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, $Port)
-try { $listener.Start() } catch {
-  Write-Host "ERRO: a porta TCP 2222 já está ocupada ou não pode ser usada." -ForegroundColor Red
-  Write-Host "Feche outra instância do MARKYS ou peça ao suporte de TI para verificar a porta 2222."
+if (-not (Test-Path $MediaFile)) { [System.IO.File]::WriteAllText($MediaFile, '{"url":""}', $Utf8NoBom) }
+$listener = $null
+foreach ($candidatePort in $PortCandidates) {
+  $candidate = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, $candidatePort)
+  try {
+    $candidate.Start()
+    $listener = $candidate
+    $Port = $candidatePort
+    break
+  } catch [System.Net.Sockets.SocketException] {
+    $candidate.Stop()
+  }
+}
+if ($null -eq $listener) {
+  Write-Host "ERRO: a porta fixa 2222 não está disponível." -ForegroundColor Red
+  Write-Host "Feche outra instância do MARKYS ou libere a porta 2222 e tente novamente."
   exit 1
 }
 try {
@@ -18,7 +34,7 @@ try {
   Write-Host "===============================================" -ForegroundColor Cyan
   Write-Host "Recepcao: http://127.0.0.1:$Port/"
   Write-Host "Tela sala de espera: http://127.0.0.1:$Port/?painel=1"
-  Write-Host "Consultorio: http://127.0.0.1:$Port/consultorio"
+  Write-Host "Painel do profissional: http://127.0.0.1:$Port/consultorio"
   Write-Host ""
   Write-Host "Enderecos para outros dispositivos:" -ForegroundColor Yellow
   $ips = @()
@@ -42,11 +58,7 @@ try {
   if ($ips.Count -eq 0) {
     Write-Host "AVISO: nao consegui detectar um IPv4 da rede. Verifique se o computador esta conectado ao Wi-Fi ou cabo." -ForegroundColor Yellow
   } else {
-    foreach ($ip in $ips) {
-      Write-Host ("Recepcao: http://{0}:{1}/" -f $ip, $Port)
-      Write-Host ("Sala:     http://{0}:{1}/?painel=1" -f $ip, $Port)
-      Write-Host ("Consultorio (selecionar servico dentro do painel): http://{0}:{1}/consultorio" -f $ip, $Port)
-    }
+    foreach ($ip in $ips) { Write-Host ("Recepcao: http://{0}:{1}/" -f $ip, $Port); Write-Host ("Sala:     http://{0}:{1}/?painel=1" -f $ip, $Port); Write-Host ("Profissional: http://{0}:{1}/consultorio" -f $ip, $Port) }
   }
   # Abre automaticamente o sistema no navegador da recepcao.
   try { Start-Process ("http://127.0.0.1:{0}/" -f $Port) } catch { Write-Host "Abra manualmente o endereco local mostrado acima." -ForegroundColor Yellow }
@@ -74,7 +86,8 @@ try {
       $request = $lines[0] -split " "
       if ($request.Count -lt 2) { continue }
       $method = $request[0].ToUpperInvariant()
-      $path = $request[1].Split('?')[0]
+      $requestTarget = $request[1]
+      $path = $requestTarget.Split('?')[0]
       $contentLength = 0
       foreach ($line in $lines) { if ($line -match "(?i)^Content-Length:\s*(\d+)") { $contentLength = [int]$Matches[1] } }
       $bodyBytes = New-Object byte[] $contentLength
@@ -85,7 +98,60 @@ try {
         $read += $n
       }
       $status = "200 OK"; $type = "text/plain; charset=utf-8"; $responseBytes = [byte[]]@()
-      if ($path -eq "/api/state" -and $method -eq "GET") {
+      if ($path -eq "/api/slideshow" -and $method -eq "GET") {
+        $items = @()
+        foreach ($file in (Get-ChildItem -LiteralPath $SlideshowDir -File | Sort-Object Name)) {
+          $ext = $file.Extension.ToLowerInvariant()
+          $kind = if ($ext -in @(".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp")) { "image" } else { "video" }
+          $items += @{ name = $file.Name; type = $kind; url = "/slideshow/" + [Uri]::EscapeDataString($file.Name) }
+        }
+        $jsonItems = ConvertTo-Json -InputObject @($items) -Compress -Depth 4
+        $responseBytes = [System.Text.Encoding]::UTF8.GetBytes($jsonItems); $type = "application/json; charset=utf-8"
+      } elseif ($path -eq "/api/slideshow/upload" -and $method -eq "POST") {
+        if ($contentLength -gt 524288000 -or $read -ne $contentLength) { $status = "413 Payload Too Large"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"Arquivo maior que 500 MB"}'); $type = "application/json; charset=utf-8" }
+        else {
+          try {
+            $query = ""
+            if ($requestTarget.Contains("?")) { $query = $requestTarget.Substring($requestTarget.IndexOf("?") + 1) }
+            $rawName = ""
+            foreach ($part in ($query -split "&")) { if ($part -match "^name=(.*)$") { $rawName = [Uri]::UnescapeDataString($Matches[1].Replace("+", " ")) } }
+            $safeName = [System.IO.Path]::GetFileName($rawName)
+            $ext = [System.IO.Path]::GetExtension($safeName).ToLowerInvariant()
+            $allowed = @(".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".mp4", ".webm", ".ogg", ".mov", ".m4v")
+            if ([string]::IsNullOrWhiteSpace($safeName) -or $safeName.Length -gt 180 -or $ext -notin $allowed -or $contentLength -le 0) { throw "Nome, extensão ou tamanho inválido" }
+            $destination = Join-Path $SlideshowDir $safeName
+            [System.IO.File]::WriteAllBytes($destination, $bodyBytes)
+            $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8"
+          } catch { $status = "400 Bad Request"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"Arquivo inválido. Use JPG, PNG, GIF, WEBP, BMP, MP4, WEBM, OGG, MOV ou M4V; máximo 500 MB."}'); $type = "application/json; charset=utf-8" }
+        }
+      } elseif ($path.StartsWith("/slideshow/")) {
+        try {
+          $requestedName = [Uri]::UnescapeDataString($path.Substring("/slideshow/".Length))
+          $safeName = [System.IO.Path]::GetFileName($requestedName)
+          $filePath = Join-Path $SlideshowDir $safeName
+          if ([string]::IsNullOrWhiteSpace($safeName) -or -not (Test-Path -LiteralPath $filePath -PathType Leaf)) { throw "Not found" }
+          $ext = [System.IO.Path]::GetExtension($safeName).ToLowerInvariant()
+          $mime = @{ ".jpg"="image/jpeg"; ".jpeg"="image/jpeg"; ".png"="image/png"; ".gif"="image/gif"; ".webp"="image/webp"; ".bmp"="image/bmp"; ".mp4"="video/mp4"; ".webm"="video/webm"; ".ogg"="video/ogg"; ".mov"="video/quicktime"; ".m4v"="video/mp4" }
+          $type = $mime[$ext]
+          if (-not $type) { throw "Unsupported media type" }
+          $responseBytes = [System.IO.File]::ReadAllBytes($filePath)
+        } catch { $status = "404 Not Found"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Not found") }
+      } elseif ($path -eq "/api/media" -and $method -eq "GET") {
+        $responseBytes = [System.IO.File]::ReadAllBytes($MediaFile); $type = "application/json; charset=utf-8"
+      } elseif ($path -eq "/api/media" -and $method -eq "POST") {
+        if ($contentLength -gt 16384 -or $read -ne $contentLength) { $status = "413 Payload Too Large"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Payload too large") }
+        else {
+          try {
+            $media = ConvertFrom-Json -InputObject ([System.Text.Encoding]::UTF8.GetString($bodyBytes))
+            if ($null -eq $media -or $media -is [System.Array] -or $null -eq $media.url) { throw "Expected media URL" }
+            $mediaUrl = [string]$media.url
+            if ($mediaUrl.Length -gt 2048) { throw "URL too long" }
+            $savedMedia = @{ url = $mediaUrl } | ConvertTo-Json -Compress
+            [System.IO.File]::WriteAllText($MediaFile, $savedMedia, $Utf8NoBom)
+            $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8"
+          } catch { $status = "400 Bad Request"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"invalid media"}'); $type = "application/json; charset=utf-8" }
+        }
+      } elseif ($path -eq "/api/state" -and $method -eq "GET") {
         $responseBytes = [System.IO.File]::ReadAllBytes($DataFile); $type = "application/json; charset=utf-8"
       } elseif ($path -eq "/api/state" -and $method -eq "POST") {
         if ($contentLength -gt 1048576 -or $read -ne $contentLength) { $status = "413 Payload Too Large"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Payload too large") }
@@ -102,8 +168,8 @@ try {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "index.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/consultorio" -or $path -eq "/consultorio.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "consultorio.html")); $type = "text/html; charset=utf-8"
-      } elseif ($path -eq "/logo-markys.png" -and (Test-Path (Join-Path $Root "logo-markys.png"))) {
-        $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "logo-markys.png")); $type = "image/png"
+      } elseif ($path -eq "/logo-Markys.png" -and (Test-Path (Join-Path $Root "logo-Markys.png"))) {
+        $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "logo-Markys.png")); $type = "image/png"
       } elseif ($path -eq "/sala-espera") {
         $status = "302 Found"; $type = "text/plain; charset=utf-8"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Abra /?painel=1")
       } elseif ($path -eq "/favicon.ico") {
