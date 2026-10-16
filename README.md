@@ -57,8 +57,9 @@ No painel único de Consultório, cada profissional seleciona seu tipo de servi�
 - Ao liberar um serviço, o paciente permanece na fila enquanto houver outros serviços pendentes. O status geral só muda para Atendido quando todos os serviços estiverem liberados.
 
 
-## Atualização das chamadas públicas
-- A tela da sala de espera exibe todas as chamadas ativas, inclusive quando o mesmo paciente foi chamado para mais de um atendimento.
-- As chamadas aparecem pela ordem em que os profissionais clicaram em **Chamar na sala** (da mais antiga para a mais recente).
-- Os anúncios de voz são enfileirados, sem cancelar a chamada anterior quando outra chamada é feita logo em seguida.
-- O módulo de apresentação de fotos e vídeos com duração de 20 segundos por foto ainda não faz parte do MARKYS; essa função precisa ser incorporada separadamente antes de ser usada neste sistema.
+## Funcionalidades alinhadas ao FAVMED
+- O MARKYS compartilha a fila e o painel profissional com o mesmo fluxo de chamadas do FAVMED.
+- A tela de espera mostra todas as chamadas ativas, inclusive chamadas do mesmo paciente para atendimentos diferentes, na ordem dos cliques.
+- A voz é enfileirada para não cancelar anúncios anteriores.
+- O painel de recepção permite gerenciar a apresentação de fotos e vídeos na sala de espera. Cada foto permanece por 20 segundos; cada vídeo avança quando termina.
+- A identidade visual permanece MARKYS, com logo próprio e paleta azul. O servidor local usa a porta TCP 2222.
