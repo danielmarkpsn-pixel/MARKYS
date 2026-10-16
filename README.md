@@ -57,8 +57,8 @@ No painel único de Consultório, cada profissional seleciona seu tipo de servi�
 - Ao liberar um serviço, o paciente permanece na fila enquanto houver outros serviços pendentes. O status geral só muda para Atendido quando todos os serviços estiverem liberados.
 
 
-## Funcionalidades alinhadas ao FAVMED
-- O MARKYS compartilha a fila e o painel profissional com o mesmo fluxo de chamadas do FAVMED.
+## Funcionalidades alinhadas
+- O MARKYS compartilha a fila e o painel profissional com o mesmo fluxo de chamadas.
 - A tela de espera mostra todas as chamadas ativas, inclusive chamadas do mesmo paciente para atendimentos diferentes, na ordem dos cliques.
 - A voz é enfileirada para não cancelar anúncios anteriores.
 - O painel de recepção permite gerenciar a apresentação de fotos e vídeos na sala de espera. Cada foto permanece por 20 segundos; cada vídeo avança quando termina.
