@@ -1,6 +1,6 @@
-# MARKYS — Chamador de pacientes
+# MARKYS — SISTEMA DE GESTÃO DE ATENDIMENTOS
 
-Clone independente baseado na estrutura do FAVMED, com identidade visual própria em azul moderno e servidor de rede local fixo na porta **TCP 2222**.
+SGA independente, com identidade visual própria em azul moderno e servidor de rede local fixo na porta **TCP 2222**.
 
 ## Arquivos
 - `index.html`: interface da recepção e painel de chamadas.
@@ -33,7 +33,7 @@ A porta é fixa: se a TCP 2222 já estiver ocupada, o servidor não muda automat
 
 
 ## Atualizações desta versão
-- Marca **Chamador de Pacientes Digital** e logotipo original do FAVMED renomeado para `logo-Markys.png`.
+- Marca **Chamador de Pacientes Digital** e logotipo original  renomeado para `logo-Markys.png`.
 - Limite de 10 consultórios e opções de atendimento: cirurgia, consulta, laboratório, raio-X, audiometria, ASO, exames complementares, medicina ocupacional, retorno, teste ergométrico, ultrassom e outros.
 - Nomes automaticamente em maiúsculas; edição sem recriar o paciente; prioridade coloca o paciente no topo.
 - Registro de hora de saída ao marcar como atendido.
