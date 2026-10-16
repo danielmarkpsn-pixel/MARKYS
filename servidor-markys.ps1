@@ -187,7 +187,7 @@ try {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "atendimento.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/logo-Markys.png" -and (Test-Path (Join-Path $Root "logo-Markys.png"))) {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "logo-Markys.png")); $type = "image/png"
-      } elseif ($path -eq "/sala-espera") {
+      } elseif ($path -eq "/sala-espera" -or $path -eq "/sala") {
         $status = "302 Found"; $type = "text/plain; charset=utf-8"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Abra /?painel=1")
       } elseif ($path -eq "/favicon.ico") {
         $status = "204 No Content"; $responseBytes = [byte[]]@()
