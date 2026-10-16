@@ -15,7 +15,9 @@ Os quatro acessos compartilham o servidor local e a porta TCP **2222**; `/atendi
 - `servidor-markys.ps1`: servidor HTTP local e sincronização da fila.
 - `INICIAR-SERVIDOR-MARKYS.bat`: inicia o servidor para compartilhar a fila na rede.
 - `ABRIR-MARKYS.bat`: abre a versão simples em um único computador.
-- `fila.json`: arquivo inicial da fila; os dados reais permanecem no computador local.
+- `fila.json`: dados da fila, no computador local.
+- `profissionais.json`: cadastro local dos profissionais.
+- `prontuarios.json`: consultas clínicas locais.
 
 ## Início rápido — vários dispositivos
 1. No GitHub, abra este repositório e clique em **Code > Download ZIP**.
