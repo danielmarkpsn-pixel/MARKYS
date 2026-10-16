@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2458a6">
+<title>MARKYS — Atendimento Médico Geral</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6fa;--panel:#fff;--line:#dce5ef;--text:#1e293b;--muted:#64748b;--blue:#2458a6;--blue2:#173e79;--red:#b42332}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#dce8fb 0,transparent 42%),var(--bg);color:var(--text);font:14px/1.5 "Segoe UI",Arial,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px clamp(16px,4vw,38px);background:#ffffffed;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:48px;height:48px;object-fit:contain}.brand h1{margin:0;font-size:21px}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}a.btn,button{font:inherit;border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}.primary{background:var(--blue);color:white}.secondary{background:#edf2f8;color:#34445c;border:1px solid var(--line)}
+main{max-width:1440px;margin:auto;padding:26px clamp(14px,3vw,32px) 42px}.heading{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:1.6px;font-weight:800;color:var(--blue);text-transform:uppercase}.heading h2{font-size:clamp(25px,4vw,34px);margin:5px 0}.heading p{margin:0;color:var(--muted)}
+.notice{display:flex;gap:12px;align-items:flex-start;background:#fff8e7;border:1px solid #f0d99d;color:#72530c;border-radius:12px;padding:14px 16px;margin-bottom:20px}.notice strong{display:block;margin-bottom:3px}.notice span{font-size:12px}
+.grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,1fr);gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:0 5px 18px #1b3a4408;margin-bottom:18px;overflow:hidden}.panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.panel-head h3{font-size:16px;margin:0}.panel-head p{font-size:12px;color:var(--muted);margin:3px 0 0}.panel-body{padding:20px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:grid;gap:6px;font-size:12px;font-weight:700;color:#475569}.field.wide{grid-column:1/-1}input,select,textarea{width:100%;font:inherit;font-weight:400;color:var(--text);background:#fff;border:1px solid #d5deea;border-radius:8px;padding:10px 11px;min-height:41px;outline-color:#7ba3e3}textarea{min-height:94px;resize:vertical}.section-title{font-size:13px;color:#34445c;margin:0 0 13px;font-weight:800}.divider{height:1px;background:#e8edf4;margin:20px 0}.pill{font-size:10px;font-weight:800;letter-spacing:.4px;color:#2458a6;background:#eaf1fd;border-radius:99px;padding:5px 9px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.side-list{display:grid;gap:10px}.side-item{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fbfcfe}.side-item strong{display:block;font-size:12px}.side-item span{font-size:11px;color:var(--muted)}.history-empty{padding:22px;text-align:center;color:var(--muted);font-size:12px}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px;padding:8px 2px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}@media(max-width:540px){.fields{grid-template-columns:1fr}.field.wide{grid-column:auto}.panel-body{padding:15px}.panel-head{padding:15px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><img src="/logo-Markys.png" alt="Logo MARKYS"><div><h1>MARKYS · Atendimento</h1><p>Prontuário eletrônico — Medicina Geral</p></div></div><div class="top-actions"><a class="btn secondary" href="/">Recepção</a><a class="btn secondary" href="/consultorio">Painel profissional</a><a class="btn secondary" href="/?painel=1">Sala de espera</a></div></header>
+<main>
+<div class="heading"><div><div class="eyebrow">QUARTO ACESSO · ÁREA CLÍNICA</div><h2>Atendimento médico geral</h2><p>Ficha clínica, avaliação, sinais vitais e plano de cuidados.</p></div><span class="pill">MODELO INICIAL</span></div>
+<div class="notice"><span aria-hidden="true">⚠️</span><div><strong>Protótipo em desenvolvimento — não inserir dados reais</strong><span>Esta tela demonstra o formulário. Nesta etapa, os dados não são gravados nem enviados ao servidor. Antes do uso clínico, será necessário implementar autenticação profissional, armazenamento protegido, auditoria e rotina de backup.</span></div></div>
+<div class="grid"><div>
+<section class="panel"><div class="panel-head"><div><h3>Identificação do paciente</h3><p>Dados para vincular o atendimento ao paciente correto.</p></div><span class="pill">01</span></div><div class="panel-body"><form id="recordForm">
+<div class="fields">
+<label class="field wide">Nome completo do paciente *<input name="patient" required maxlength="160" autocomplete="off" placeholder="Nome completo"></label>
+<label class="field">Data de nascimento<input name="birthDate" type="date"></label>
+<label class="field">Sexo (opcional)<select name="sex"><option value="">Não informado</option><option>Feminino</option><option>Masculino</option><option>Outro</option><option>Prefere não informar</option></select></label>
+<label class="field">Telefone<input name="phone" maxlength="40" autocomplete="off" placeholder="(00) 00000-0000"></label>
+<label class="field">Profissional responsável<input name="professional" maxlength="160" placeholder="Nome do profissional"></label>
+</div>
+<div class="divider"></div><p class="section-title">02 · Queixa e história clínica</p>
+<div class="fields">
+<label class="field wide">Queixa principal *<textarea name="complaint" required maxlength="4000" placeholder="Motivo da consulta"></textarea></label>
+<label class="field wide">História da doença atual / anamnese *<textarea name="history" required maxlength="12000" placeholder="Início, duração, sintomas e evolução"></textarea></label>
+<label class="field">Alergias conhecidas<textarea name="allergies" maxlength="2000" placeholder="Alergias e reações conhecidas"></textarea></label>
+<label class="field">Medicamentos em uso<textarea name="medications" maxlength="4000" placeholder="Medicamento, dose e frequência"></textarea></label>
+</div>
+<div class="divider"></div><p class="section-title">03 · Sinais vitais</p>
+<div class="fields">
+<label class="field">Pressão arterial<input name="bp" maxlength="30" placeholder="Ex.: 120/80 mmHg"></label>
+<label class="field">Frequência cardíaca (bpm)<input name="hr" type="number" min="1" max="300" placeholder="bpm"></label>
+<label class="field">Temperatura (°C)<input name="temp" type="number" min="25" max="45" step=".1" placeholder="°C"></label>
+<label class="field">Saturação O₂ (%)<input name="spo2" type="number" min="1" max="100" placeholder="%"></label>
+<label class="field">Peso (kg)<input name="weight" type="number" min=".2" max="500" step=".01" placeholder="kg"></label>
+<label class="field">Altura (cm)<input name="height" type="number" min="20" max="280" step=".1" placeholder="cm"></label>
+</div>
+<div class="divider"></div><p class="section-title">04 · Exame, avaliação e conduta</p>
+<div class="fields">
+<label class="field wide">Exame físico<textarea name="exam" maxlength="12000" placeholder="Achados relevantes do exame físico"></textarea></label>
+<label class="field wide">Avaliação clínica / hipótese diagnóstica *<textarea name="assessment" required maxlength="8000" placeholder="Impressão clínica e hipóteses"></textarea></label>
+<label class="field wide">Plano e conduta *<textarea name="plan" required maxlength="12000" placeholder="Orientações, condutas e acompanhamento"></textarea></label>
+<label class="field wide">Observações adicionais<textarea name="notes" maxlength="8000" placeholder="Informações complementares"></textarea></label>
+</div>
+<div class="actions"><button class="primary" type="submit">Revisar preenchimento</button><button class="secondary" type="reset" id="clearBtn">Limpar formulário</button></div>
+</form></div></section>
+</div>
+<aside>
+<section class="panel"><div class="panel-head"><div><h3>Histórico do paciente</h3><p>Atendimentos anteriores</p></div><span class="pill">HISTÓRICO</span></div><div class="history-empty">O histórico clínico será conectado ao banco de dados protegido na próxima etapa.</div></section>
+<section class="panel"><div class="panel-head"><div><h3>Etapas para liberar</h3><p>Antes de uso real</p></div></div><div class="panel-body side-list"><div class="side-item"><strong>1. Autenticação e permissões</strong><span>Acesso restrito a profissionais autorizados.</span></div><div class="side-item"><strong>2. Banco de dados clínicos</strong><span>Registros persistentes vinculados ao paciente.</span></div><div class="side-item"><strong>3. Auditoria e segurança</strong><span>Registro de acessos, alterações e backups.</span></div><div class="side-item"><strong>4. Documentos clínicos</strong><span>Impressão e PDF após validar os dados e o fluxo.</span></div></div></section>
+<div id="feedback" class="notice" style="display:none;margin:0"><span>ℹ️</span><div><strong>Revisão local do formulário</strong><span id="feedbackText"></span></div></div>
+</aside></div>
+<footer class="footer"><span>MARKYS · Desenvolvido por Daniel Marques via IA</span><span>Modelo inicial — não usar com dados reais</span></footer>
+</main>
+<script>
+document.getElementById('recordForm').addEventListener('submit',function(event){event.preventDefault();document.getElementById('feedbackText').textContent='Campos obrigatórios preenchidos. O sistema ainda não salva prontuários; nenhum dado foi enviado ou armazenado.';document.getElementById('feedback').style.display='flex';});
+document.getElementById('clearBtn').addEventListener('click',function(){document.getElementById('feedback').style.display='none';});
+</script>
+</body></html>

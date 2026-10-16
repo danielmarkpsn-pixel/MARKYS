@@ -18,20 +18,21 @@ Esta versão compartilha a fila por HTTP dentro da rede local. Não possui login
 3. INICIAR O SERVIDOR
 1. Dê dois cliques em INICIAR-SERVIDOR-MARKYS.bat.
 2. O servidor usa a porta TCP 2222. Se a porta já estiver ocupada, ele exibirá um erro em vez de escolher outra porta.
-3. A janela mostrará somente três endereços: Recepção, Sala e Consultório. Use os endereços reais exibidos, não exemplos.
+3. A janela mostrará quatro endereços: Recepção, Sala, Profissional e Atendimento. Use os endereços reais exibidos, não exemplos.
 4. Mantenha a janela do PowerShell aberta; fechá-la interrompe a comunicação.
 
 4. FIREWALL DO WINDOWS
 Se o acesso remoto não funcionar, peça ao suporte de TI para criar uma regra de entrada TCP para a porta local 2222, permitindo a conexão somente no perfil Privado. Não desative o firewall e não habilite a regra em redes públicas. O Windows pode exigir permissão de administrador.
 
-5. ABRIR OS TRÊS ENDEREÇOS
+5. ABRIR OS QUATRO ACESSOS
 1. **Recepção:** abra o endereço-base mostrado na janela do servidor.
 2. **Sala de espera:** na TV/tela da sala, abra o endereço que termina em `/?painel=1`.
-3. **Consultório:** todos os profissionais usam o mesmo endereço `/consultorio`. Cada profissional escolhe o seu tipo de serviço no menu dentro do painel; não existe mais um link diferente por serviço.
-4. No painel Consultório, clique em “Chamar na sala” para chamar o paciente pelo tipo de atendimento. Clique em “Atender” quando começar; o cartão fica vermelho na tela da sala. Clique em “Liberar” ao concluir aquele serviço; o cartão fica verde.
-5. O paciente permanece disponível para os demais serviços cadastrados até que todos sejam liberados.
-6. Para voz na tela de espera, clique em “Ativar voz nesta tela” uma vez nesse dispositivo e confira o volume.
-7. Faça um teste com um paciente fictício antes de começar. Depois, remova o registro de teste.
+3. **Profissional:** todos os profissionais usam o mesmo endereço `/consultorio`. Cada profissional escolhe o seu tipo de serviço no menu dentro do painel; não existe mais um link diferente por serviço.
+4. **Atendimento médico geral:** abra o endereço que termina em `/atendimento`. Este é um protótipo de formulário e ainda não grava prontuários. Não inserir dados reais de saúde até existir autenticação, armazenamento protegido e auditoria.
+5. No painel Consultório, clique em “Chamar na sala” para chamar o paciente pelo tipo de atendimento. Clique em “Atender” quando começar; o cartão fica vermelho na tela da sala. Clique em “Liberar” ao concluir aquele serviço; o cartão fica verde.
+6. O paciente permanece disponível para os demais serviços cadastrados até que todos sejam liberados.
+7. Para voz na tela de espera, clique em “Ativar voz nesta tela” uma vez nesse dispositivo e confira o volume.
+8. Faça um teste com um paciente fictício antes de começar. Depois, remova o registro de teste.
 
 6. SOLUÇÃO DE PROBLEMAS
 - Endereço não abre: confira se os dispositivos estão na mesma rede, se o servidor segue aberto e se o IP foi digitado corretamente.

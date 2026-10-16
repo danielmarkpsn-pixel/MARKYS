@@ -2,6 +2,14 @@
 
 SGA independente, com identidade visual própria em azul moderno e servidor de rede local fixo na porta **TCP 2222**.
 
+## Acessos na rede local
+- Recepção: `http://IP-DO-SERVIDOR:2222/`
+- Sala de espera: `http://IP-DO-SERVIDOR:2222/?painel=1`
+- Profissional: `http://IP-DO-SERVIDOR:2222/consultorio`
+- Atendimento médico geral: `http://IP-DO-SERVIDOR:2222/atendimento`
+
+Os quatro acessos compartilham o servidor local e a porta TCP **2222**; `/atendimento` é uma nova página, não uma nova porta TCP. O prontuário está apenas como protótipo visual: ainda não armazena dados. Não inserir informações reais de pacientes até concluir autenticação, banco clínico, permissões, auditoria e proteção dos dados.
+
 ## Arquivos
 - `index.html`: interface da recepção e painel de chamadas.
 - `servidor-markys.ps1`: servidor HTTP local e sincronização da fila.
