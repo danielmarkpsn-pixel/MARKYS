@@ -71,3 +71,12 @@ REGRAS DE CHAMADA E ATENDIMENTO POR SERVICO
 - A recepção não chama pacientes nem finaliza atendimentos. A chamada só começa quando o profissional clica em “Chamar na sala” no painel Consultório.
 - No painel Consultório, o profissional escolhe se o chamado exibirá o tipo de atendimento ou o consultório.
 - Ao liberar um serviço, o paciente permanece na fila enquanto houver outros serviços pendentes. O status geral só muda para Atendido quando todos os serviços estiverem liberados.
+
+
+9. APRESENTAÇÃO DE FOTOS E VÍDEOS NA SALA DE ESPERA
+1. Abra a recepção pelo endereço do servidor MARKYS (não abra o arquivo HTML diretamente).
+2. Use a seção de apresentação de mídia para selecionar fotos e vídeos e enviá-los ao servidor.
+3. A tela da sala de espera começa a apresentação após 1 minuto sem chamadas ativas. Quando houver chamada/atendimento ativo, a apresentação é pausada/ocultada para priorizar os pacientes.
+4. Cada foto fica visível por 20 segundos. Os vídeos tocam até o final e avançam automaticamente; o som depende do volume e das permissões do navegador/TV.
+5. Os arquivos enviados ficam na pasta `midia-sala` e a lista de mídia é mantida em `midia.json`. Não apague esses arquivos se quiser preservar a apresentação.
+6. Para aplicar atualizações do GitHub, pare o servidor com Ctrl+C, atualize os arquivos do programa e reinicie o arquivo INICIAR-SERVIDOR-MARKYS.bat. Preserve `fila.json`, `midia.json` e a pasta `midia-sala` para não perder dados ou mídias.
