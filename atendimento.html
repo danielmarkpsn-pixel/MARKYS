@@ -38,14 +38,14 @@ main{max-width:1440px;margin:auto;padding:26px clamp(14px,3vw,32px) 42px}.headin
 <label class="field">Alergias conhecidas<textarea name="allergies" maxlength="2000" placeholder="Alergias e reações conhecidas"></textarea></label>
 <label class="field">Medicamentos em uso<textarea name="medications" maxlength="4000" placeholder="Medicamento, dose e frequência"></textarea></label>
 </div>
-<div class="divider"></div><p class="section-title">03 · Sinais vitais</p>
+<div class="divider"></div><p class="section-title">03 · Sinais vitais (registrados na página Preparo)</p>
 <div class="fields">
-<label class="field">Pressão arterial<input name="bp" maxlength="30" placeholder="Ex.: 120/80 mmHg"></label>
-<label class="field">Frequência cardíaca (bpm)<input name="hr" type="number" min="1" max="300" placeholder="bpm"></label>
-<label class="field">Temperatura (°C)<input name="temp" type="number" min="25" max="45" step=".1" placeholder="°C"></label>
-<label class="field">Saturação O₂ (%)<input name="spo2" type="number" min="1" max="100" placeholder="%"></label>
-<label class="field">Peso (kg)<input name="weight" type="number" min=".2" max="500" step=".01" placeholder="kg"></label>
-<label class="field">Altura (cm)<input name="height" type="number" min="20" max="280" step=".1" placeholder="cm"></label>
+<label class="field">Pressão arterial<input name="bp" maxlength="30" placeholder="Ex.: 120/80 mmHg" readonly aria-readonly="true" title="Preenchido na página Preparo"></label>
+<label class="field">Frequência cardíaca (bpm)<input name="hr" type="number" min="1" max="300" placeholder="bpm" readonly aria-readonly="true" title="Preenchido na página Preparo"></label>
+<label class="field">Temperatura (°C)<input name="temp" type="number" min="25" max="45" step=".1" placeholder="°C" readonly aria-readonly="true" title="Preenchido na página Preparo"></label>
+<label class="field">Saturação O₂ (%)<input name="spo2" type="number" min="1" max="100" placeholder="%" readonly aria-readonly="true" title="Preenchido na página Preparo"></label>
+<label class="field">Peso (kg)<input name="weight" type="number" min=".2" max="500" step=".01" placeholder="kg" readonly aria-readonly="true" title="Preenchido na página Preparo"></label>
+<label class="field">Altura (cm)<input name="height" type="number" min="20" max="280" step=".1" placeholder="cm" readonly aria-readonly="true" title="Preenchido na página Preparo"></label>
 </div>
 <div class="divider"></div><p class="section-title">04 · Exame, avaliação e conduta</p>
 <div class="fields">
@@ -54,7 +54,7 @@ main{max-width:1440px;margin:auto;padding:26px clamp(14px,3vw,32px) 42px}.headin
 <label class="field wide">Plano e conduta *<textarea name="plan" required maxlength="12000" placeholder="Orientações, condutas e acompanhamento"></textarea></label>
 <label class="field wide">Observações adicionais<textarea name="notes" maxlength="8000" placeholder="Informações complementares"></textarea></label>
 </div>
-<div class="actions"><button class="primary" type="submit">Finalizar atendimento</button><a class="secondary" href="/preparo">Abrir Preparo / sinais vitais</a></div>
+<div class="actions"><button class="primary" type="submit">Finalizar atendimento</button></div>
 </form></div></section>
 </div>
 <aside>

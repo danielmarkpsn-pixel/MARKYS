@@ -336,8 +336,13 @@ else{load().then(()=>{render();renderPublic();});setInterval(()=>{load().then(()
 const $=id=>document.getElementById(id), roomNames={"Sala 1":"RX","Sala 2":"Coleta / laboratório","Sala 3":"Audiometria","Sala 4":"Exames complementares","Sala 5":"ASO"};
 let professionals=[];
 window.MARKYS_ASSIGNMENTS={};
-function refreshAssignments(){window.MARKYS_ASSIGNMENTS={};}
-function renderProfessionals(){refreshAssignments();}
+function refreshAssignments(){window.MARKYS_ASSIGNMENTS={};professionals.forEach(p=>{if(p&&p.room)window.MARKYS_ASSIGNMENTS[p.room]=p;});}
+function renderProfessionals(){
+ refreshAssignments();
+ const box=$("professionalsList");if(!box)return;
+ if(!professionals.length){box.innerHTML='<span>Nenhum profissional cadastrado. Preencha os campos acima e clique em Cadastrar profissional.</span>';return;}
+ box.innerHTML=professionals.slice().sort((a,b)=>String(a.room||"").localeCompare(String(b.room||""),"pt-BR",{numeric:true})).map(p=>'<div class="side-item"><strong>'+esc(p.room)+' · '+esc(p.name)+'</strong><span>'+esc(p.role||"Função não informada")+' · Registro: '+esc(p.registration||"—")+'</span><button type="button" class="btn secondary" data-remove-professional="'+esc(p.id)+'">Excluir</button></div>').join("");
+}
 async function loadProfessionals(){try{professionals=await api("/api/professionals");if(!Array.isArray(professionals))professionals=[];renderProfessionals();}catch(e){if($("professionalsList"))$("professionalsList").textContent="Não foi possível carregar profissionais. Verifique se o servidor MARKYS está atualizado.";}}
 $("professionalForm").addEventListener("submit",async e=>{e.preventDefault();const name=$("professionalName").value.trim(),registration=$("professionalReg").value.trim().toLocaleUpperCase("pt-BR"),role=$("professionalRole").value.trim(),room=$("professionalRoom").value;if(!name||!registration||!role||!room)return;try{const existing=professionals.find(p=>p.room===room);if(existing){professionals=professionals.filter(p=>p.room!==room);professionals.push({id:existing.id,name,registration,role,room,created:existing.created||Date.now(),updated:Date.now()});}else{professionals.push({id:String(Date.now())+Math.random().toString(16).slice(2,6),name,registration,role,room,created:Date.now()});}await api("/api/professionals",professionals);e.target.reset();renderProfessionals();if(window.MARKYS_REFRESH_PROFESSIONAL_FILTER)window.MARKYS_REFRESH_PROFESSIONAL_FILTER();}catch(err){alert("Não foi possível salvar o profissional. Confira a conexão com o servidor.");}});
 $("professionalsList").addEventListener("click",async e=>{const b=e.target.closest("[data-remove-professional]");if(!b)return;const p=professionals.find(x=>x.id===b.dataset.removeProfessional);if(!p||!confirm("Excluir o cadastro de "+p.name+"?"))return;try{professionals=professionals.filter(x=>x.id!==p.id);await api("/api/professionals",professionals);renderProfessionals();if(window.MARKYS_REFRESH_PROFESSIONAL_FILTER)window.MARKYS_REFRESH_PROFESSIONAL_FILTER();}catch(err){alert("Não foi possível atualizar os profissionais.");}});
