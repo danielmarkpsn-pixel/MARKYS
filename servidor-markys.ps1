@@ -40,7 +40,7 @@ try {
   Write-Host "Tela sala de espera: http://127.0.0.1:$Port/?painel=1"
   Write-Host "Painel do profissional: http://127.0.0.1:$Port/consultorio"
   Write-Host "Atendimento medico:     http://127.0.0.1:$Port/atendimento"
-  Write-Host "Triagem / sinais vitais: http://127.0.0.1:$Port/preparo"
+  Write-Host "Triagem / sinais vitais: http://127.0.0.1:$Port/triagem"
   Write-Host ""
   Write-Host "Enderecos para outros dispositivos:" -ForegroundColor Yellow
   $ips = @()
@@ -69,7 +69,7 @@ try {
       Write-Host ("Sala de espera: http://{0}:{1}/?painel=1" -f $ip, $Port)
       Write-Host ("Profissional:  http://{0}:{1}/consultorio" -f $ip, $Port)
       Write-Host ("Atendimento:   http://{0}:{1}/atendimento" -f $ip, $Port)
-      Write-Host ("Triagem:       http://{0}:{1}/preparo" -f $ip, $Port)
+      Write-Host ("Triagem:       http://{0}:{1}/triagem" -f $ip, $Port)
       Write-Host ""
     }
   }
@@ -203,7 +203,7 @@ try {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "index.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/consultorio" -or $path -eq "/consultorio.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "consultorio.html")); $type = "text/html; charset=utf-8"
-      } elseif ($path -eq "/preparo" -or $path -eq "/preparo.html") {
+      } elseif ($path -eq "/triagem" -or $path -eq "/triagem.html" -or $path -eq "/preparo" -or $path -eq "/preparo.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "preparo.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/atendimento" -or $path -eq "/atendimento.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "atendimento.html")); $type = "text/html; charset=utf-8"
