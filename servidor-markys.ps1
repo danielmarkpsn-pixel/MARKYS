@@ -174,7 +174,19 @@ try {
         $responseBytes = [System.IO.File]::ReadAllBytes($ProfessionalsFile); $type = "application/json; charset=utf-8"
       } elseif ($path -eq "/api/professionals" -and $method -eq "POST") {
         if ($contentLength -gt 262144 -or $read -ne $contentLength) { $status = "413 Payload Too Large"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes("Payload too large") }
-        else { try { $json = [System.Text.Encoding]::UTF8.GetString($bodyBytes); $parsed = ConvertFrom-Json -InputObject $json; if ($parsed -isnot [System.Array] -and $null -ne $parsed) { throw "Expected JSON array" }; [System.IO.File]::WriteAllText($ProfessionalsFile, $json, $Utf8NoBom); $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8" } catch { $status = "400 Bad Request"; $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"invalid JSON"}'); $type = "application/json; charset=utf-8" } }
+        else {
+          try {
+            $json = [System.Text.Encoding]::UTF8.GetString($bodyBytes)
+            if (-not $json.TrimStart().StartsWith("[")) { throw "Expected JSON array" }
+            $null = ConvertFrom-Json -InputObject $json -ErrorAction Stop
+            [System.IO.File]::WriteAllText($ProfessionalsFile, $json, $Utf8NoBom)
+            $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"ok":true}'); $type = "application/json; charset=utf-8"
+          } catch {
+            $status = "400 Bad Request"
+            $responseBytes = [System.Text.Encoding]::UTF8.GetBytes('{"error":"invalid JSON array"}')
+            $type = "application/json; charset=utf-8"
+          }
+        }
       } elseif ($path -eq "/api/records" -and $method -eq "GET") {
         $responseBytes = [System.IO.File]::ReadAllBytes($RecordsFile); $type = "application/json; charset=utf-8"
       } elseif ($path -eq "/api/records" -and $method -eq "POST") {
