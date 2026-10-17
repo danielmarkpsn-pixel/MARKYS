@@ -6,9 +6,10 @@ SGA independente, com identidade visual própria em azul moderno e servidor de r
 - Recepção: `http://IP-DO-SERVIDOR:2222/`
 - Sala de espera: `http://IP-DO-SERVIDOR:2222/?painel=1`
 - Profissional: `http://IP-DO-SERVIDOR:2222/consultorio`
-- Atendimento médico geral: `http://IP-DO-SERVIDOR:2222/atendimento`
+- Atendimento clínico: `http://IP-DO-SERVIDOR:2222/atendimento`
+- Preparo / sinais vitais: `http://IP-DO-SERVIDOR:2222/preparo`
 
-Os quatro acessos compartilham o servidor local e a porta TCP **2222**; `/atendimento` é uma nova página, não uma nova porta TCP. O prontuário está apenas como protótipo visual: ainda não armazena dados. Não inserir informações reais de pacientes até concluir autenticação, banco clínico, permissões, auditoria e proteção dos dados.
+Os quatro acessos compartilham o servidor local e a porta TCP **2222**; `/atendimento` é uma nova página, não uma nova porta TCP. O prontuário e os sinais vitais são persistidos em arquivos JSON locais (`prontuarios.json` e `fila.json`). Os documentos clínicos ficam armazenados como registros estruturados no arquivo de prontuários; o navegador não pode gravar automaticamente PDFs em uma pasta local arbitrária. O sistema ainda não possui login, criptografia nem auditoria; não inserir dados reais de pacientes até implementar essas proteções.
 
 ## Arquivos
 - `index.html`: interface da recepção e painel de chamadas.
