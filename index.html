@@ -357,6 +357,16 @@ const $=id=>document.getElementById(id), roomNames={"Sala 1":"RX","Sala 2":"Cole
 let professionals=[];
 window.MARKYS_ASSIGNMENTS={};
 function refreshAssignments(){window.MARKYS_ASSIGNMENTS={};professionals.forEach(p=>{if(p&&p.room)window.MARKYS_ASSIGNMENTS[p.room]=p;});}
+async function api(url,data){
+ const options=data===undefined?{method:"GET",cache:"no-store"}:{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)};
+ const response=await fetch(url,options);
+ if(!response.ok){
+  let detail="";
+  try{detail=(await response.text()).slice(0,240);}catch(e){}
+  throw new Error("HTTP "+response.status+(detail?": "+detail:""));
+ }
+ return await response.json();
+}
 function renderProfessionals(){
  refreshAssignments();
  const box=$("professionalsList");if(!box)return;
