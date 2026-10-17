@@ -44,27 +44,34 @@ try {
   Write-Host ""
   Write-Host "Enderecos para outros dispositivos:" -ForegroundColor Yellow
   $ips = @()
-  # Prioriza a interface IPv4 ativa com gateway (normalmente Wi-Fi ou cabo).
+  # Reune os IPv4 de todas as interfaces ativas, com ou sem gateway.
   try {
     $ips += Get-NetIPConfiguration -ErrorAction Stop |
-      Where-Object { $_.NetAdapter.Status -eq "Up" -and $_.IPv4DefaultGateway -ne $null } |
+      Where-Object { $_.NetAdapter.Status -eq "Up" -and $_.IPv4Address } |
       ForEach-Object { $_.IPv4Address } |
       Where-Object { $_.IPAddress -and $_.IPAddress -notlike "127.*" -and $_.IPAddress -notlike "169.254.*" } |
       ForEach-Object { $_.IPAddress }
   } catch { }
-  # Alternativa para sistemas sem o cmdlet ou sem gateway detectado.
-  if ($ips.Count -eq 0) {
+  # Tambem consulta as interfaces de rede para incluir adaptadores que o cmdlet nao retornou.
+  try {
     $ips += [System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces() |
       Where-Object { $_.OperationalStatus -eq "Up" -and $_.NetworkInterfaceType -ne "Loopback" } |
       ForEach-Object { $_.GetIPProperties().UnicastAddresses } |
       Where-Object { $_.Address.AddressFamily -eq [System.Net.Sockets.AddressFamily]::InterNetwork -and $_.Address.ToString() -notlike "169.254.*" -and $_.Address.ToString() -notlike "127.*" } |
       ForEach-Object { $_.Address.ToString() }
-  }
+  } catch { }
   $ips = @($ips | Select-Object -Unique)
   if ($ips.Count -eq 0) {
     Write-Host "AVISO: nao consegui detectar um IPv4 da rede. Verifique se o computador esta conectado ao Wi-Fi ou cabo." -ForegroundColor Yellow
   } else {
-    foreach ($ip in $ips) { Write-Host ("Recepcao: http://{0}:{1}/" -f $ip, $Port); Write-Host ("Sala:     http://{0}:{1}/?painel=1" -f $ip, $Port); Write-Host ("Profissional: http://{0}:{1}/consultorio" -f $ip, $Port); Write-Host ("Atendimento:  http://{0}:{1}/atendimento" -f $ip, $Port) }
+    foreach ($ip in $ips) {
+      Write-Host ("Recepcao:      http://{0}:{1}/" -f $ip, $Port)
+      Write-Host ("Sala de espera: http://{0}:{1}/?painel=1" -f $ip, $Port)
+      Write-Host ("Profissional:  http://{0}:{1}/consultorio" -f $ip, $Port)
+      Write-Host ("Atendimento:   http://{0}:{1}/atendimento" -f $ip, $Port)
+      Write-Host ("Preparo:       http://{0}:{1}/preparo" -f $ip, $Port)
+      Write-Host ""
+    }
   }
   # Abre automaticamente o sistema no navegador da recepcao.
   try { Start-Process ("http://127.0.0.1:{0}/" -f $Port) } catch { Write-Host "Abra manualmente o endereco local mostrado acima." -ForegroundColor Yellow }
