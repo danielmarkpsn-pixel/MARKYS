@@ -40,6 +40,7 @@ try {
   Write-Host "Tela sala de espera: http://127.0.0.1:$Port/?painel=1"
   Write-Host "Painel do profissional: http://127.0.0.1:$Port/consultorio"
   Write-Host "Atendimento medico:     http://127.0.0.1:$Port/atendimento"
+  Write-Host "Preparo / sinais vitais: http://127.0.0.1:$Port/preparo"
   Write-Host ""
   Write-Host "Enderecos para outros dispositivos:" -ForegroundColor Yellow
   $ips = @()
