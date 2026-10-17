@@ -183,6 +183,8 @@ try {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "index.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/consultorio" -or $path -eq "/consultorio.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "consultorio.html")); $type = "text/html; charset=utf-8"
+      } elseif ($path -eq "/preparo" -or $path -eq "/preparo.html") {
+        $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "preparo.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/atendimento" -or $path -eq "/atendimento.html") {
         $responseBytes = [System.IO.File]::ReadAllBytes((Join-Path $Root "atendimento.html")); $type = "text/html; charset=utf-8"
       } elseif ($path -eq "/logo-Markys.png" -and (Test-Path (Join-Path $Root "logo-Markys.png"))) {
